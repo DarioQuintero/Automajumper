@@ -8,25 +8,57 @@ public class Map : MonoBehaviour
 
     public static Map instance;
 
-    public bool[,] map = new bool[10, 10];
+    public int[,] map;
     public GameObject[,] cubes = new GameObject[10, 10];
+
+    [SerializeField] float transitionTime = 1f;
 
     void Awake()
     {
         instance = this;
 
-        for (int i = 0; i < 10; i++)
+        map = new int[,] {
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        };
+
+        int[,] newMap = new int[map.GetLength(1), map.GetLength(0)];
+
+        for (int i = 0; i < map.GetLength(0); i++)
         {
-            cubes[i, 0] = Instantiate(cube, new Vector3(i, 0, 0), Quaternion.identity);
-            map[i, 0] = true;
+            for (int j = 0; j < map.GetLength(1); j++)
+            {
+                newMap[j, i] = map[i, j];
+            }
+        }
+
+        map = newMap;
+
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.GetLength(1); j++)
+            {
+                if (newMap[i, j] == 1)
+                {
+                    cubes[i, j] = Instantiate(cube, new Vector3(i, j, 0), Quaternion.identity);
+                }
+            }
         }
     }
 
     private void Update()
     {
-        if (Time.frameCount % 100 == 0)
+        transitionTime -= Time.deltaTime;
+
+        if (transitionTime < 0)
         {
-            bool[,] newMap = (bool[,]) map.Clone();
+            transitionTime = 0.3f;
+
+            int[,] newMap = new int[map.GetLength(0), map.GetLength(1)];
 
             for (int i = 0; i < map.GetLength(0); i++)
             {
@@ -34,17 +66,17 @@ public class Map : MonoBehaviour
                 {
                     newMap[i, j] = map[i, j];
 
-                    if (map[i, j])
+                    if (map[i, j] == 1 )
                     {
                         Destroy(cubes[i, j]);
-                        newMap[i, j] = false;
+                        newMap[i, j] = 0;
                     }
                     else
                     {
                         if (HasALiveNeighbor(map, i, j))
                         {
                             cubes[i, j] = Instantiate(cube, new Vector3(i, j, 0), Quaternion.identity);
-                            newMap[i, j] = true;
+                            newMap[i, j] = 1;
                         }
                     }
                 }
@@ -54,12 +86,12 @@ public class Map : MonoBehaviour
         }
     }
 
-    bool HasALiveNeighbor(bool[,] map, int i, int j)
+    bool HasALiveNeighbor(int[,] map, int i, int j)
     {
-        if (i - 1 >= 0 && map[i - 1, j]) return true;
-        if (j - 1 >= 0 && map[i, j - 1]) return true;
-        if (i + 1 < map.GetLength(0) && map[i + 1, j]) return true;
-        if (j + 1 < map.GetLength(1) && map[i, j + 1]) return true;
+        if (i - 1 >= 0 && map[i - 1, j] == 1) return true;
+        if (j - 1 >= 0 && map[i, j - 1] == 1) return true;
+        if (i + 1 < map.GetLength(0) && map[i + 1, j] == 1) return true;
+        if (j + 1 < map.GetLength(1) && map[i, j + 1] == 1) return true;
         return false;
     }
 }
