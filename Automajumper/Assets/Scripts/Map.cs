@@ -5,6 +5,7 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     [SerializeField] GameObject cube;
+    [SerializeField] GameObject line;
 
     public static Map instance;
 
@@ -17,6 +18,7 @@ public class Map : MonoBehaviour
     {
         instance = this;
 
+        // initialize the map
         map = new int[,] {
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -26,6 +28,7 @@ public class Map : MonoBehaviour
             { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
 
+        // transpose the map
         int[,] newMap = new int[map.GetLength(1), map.GetLength(0)];
 
         for (int i = 0; i < map.GetLength(0); i++)
@@ -35,9 +38,9 @@ public class Map : MonoBehaviour
                 newMap[j, i] = map[i, j];
             }
         }
-
         map = newMap;
 
+        // generate the cubes
         for (int i = 0; i < map.GetLength(0); i++)
         {
             for (int j = 0; j < map.GetLength(1); j++)
@@ -47,6 +50,17 @@ public class Map : MonoBehaviour
                     cubes[i, j] = Instantiate(cube, new Vector3(i, j, 0), Quaternion.identity);
                 }
             }
+        }
+
+        // generate the lines
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            Instantiate(line, new Vector3(i + 0.5f, 0, 0), Quaternion.Euler(0, 0, 90));
+        }
+
+        for (int j = 0; j < map.GetLength(1); j++)
+        {
+            Instantiate(line, new Vector3(0, j + 0.5f, 0), Quaternion.identity);
         }
     }
 
