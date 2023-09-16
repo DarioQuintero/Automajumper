@@ -22,10 +22,10 @@ public class Map : MonoBehaviour
         map = new int[,] {
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0},
             { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         };
 
         // transpose the map
@@ -57,11 +57,16 @@ public class Map : MonoBehaviour
         {
             Instantiate(line, new Vector3(i + 0.5f, 0, 0), Quaternion.Euler(0, 0, 90));
         }
+        Instantiate(line, new Vector3(-0.5f, 0, 0), Quaternion.Euler(0, 0, 90));
+   
 
         for (int j = 0; j < map.GetLength(1); j++)
         {
             Instantiate(line, new Vector3(0, j + 0.5f, 0), Quaternion.identity);
         }
+        Instantiate(line, new Vector3(0, -0.5f, 0), Quaternion.identity);
+
+        transitionTime = 1f;
     }
 
     private void Update()
@@ -70,7 +75,7 @@ public class Map : MonoBehaviour
 
         if (transitionTime < 0)
         {
-            transitionTime = 0.3f;
+            transitionTime = 1f;
 
             int[,] newMap = new int[map.GetLength(0), map.GetLength(1)];
 
@@ -80,14 +85,20 @@ public class Map : MonoBehaviour
                 {
                     newMap[i, j] = map[i, j];
 
-                    if (map[i, j] == 1 )
+                    // rules for alive cell
+                    if (map[i, j] == 1)
                     {
-                        Destroy(cubes[i, j]);
-                        newMap[i, j] = 0;
+                        int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
+                        if (numOfAliveNeighbors < 2 || numOfAliveNeighbors > 3)
+                        {
+                            Destroy(cubes[i, j]);
+                            newMap[i, j] = 0;
+                        }
                     }
+                    // rules for dead cell
                     else
                     {
-                        if (HasALiveNeighbor(map, i, j))
+                        if (CountAliveNeighbors(map, i, j) == 3)
                         {
                             cubes[i, j] = Instantiate(cube, new Vector3(i, j, 0), Quaternion.identity);
                             newMap[i, j] = 1;
@@ -100,13 +111,38 @@ public class Map : MonoBehaviour
         }
     }
 
-    bool HasALiveNeighbor(int[,] map, int i, int j)
+    int CountAliveNeighbors(int[,] map, int i, int j)
     {
-        if (i - 1 >= 0 && map[i - 1, j] == 1) return true;
-        if (j - 1 >= 0 && map[i, j - 1] == 1) return true;
-        if (i + 1 < map.GetLength(0) && map[i + 1, j] == 1) return true;
-        if (j + 1 < map.GetLength(1) && map[i, j + 1] == 1) return true;
-        return false;
+        int ans = 0;
+
+        // left and right neighbors
+        if (j - 1 >= 0 && map[i, j - 1] == 1)
+            ans++;
+        if (j + 1 < map.GetLength(1) && map[i, j + 1] == 1)
+            ans++;
+
+        // top three neighbors
+        if (i - 1 >= 0) {
+            if (map[i - 1, j] == 1)
+                ans++;
+            if (j - 1 >= 0 && map[i - 1, j - 1] == 1)
+                ans++;
+            if (j + 1 < map.GetLength(1) && map[i - 1, j + 1] == 1)
+                ans++;
+        }
+
+        // top three neighbors
+        if (i + 1 < map.GetLength(1))
+        {
+            if (map[i + 1, j] == 1)
+                ans++;
+            if (j - 1 >= 0 && map[i + 1, j - 1] == 1)
+                ans++;
+            if (j + 1 < map.GetLength(1) && map[i + 1, j + 1] == 1)
+                ans++;
+        }
+
+        return ans;
     }
 }
 
