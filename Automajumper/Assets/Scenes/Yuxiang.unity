@@ -154,7 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cube: {fileID: 8687150261473996953, guid: 0f40d745d78e2446aa34da4ead8d913b, type: 3}
   line: {fileID: 3943902931969634868, guid: b5b4c4763f1814bdbb44098a0f6883aa, type: 3}
-  transitionTime: 0
+  transitionTime: 0.5
+  curTime: 0
 --- !u!4 &749445535
 Transform:
   m_ObjectHideFlags: 0
