@@ -19,26 +19,12 @@ public class Map : MonoBehaviour
     {
         instance = this;
 
-        // test
-        //map = new int[,] {
-        //    { 0, 0, 0, 0, 0, 0 },
-        //    { 0, 1, 1, 1, 0, 0 },
-        //    { 0, 0, 0, 0, 0, 0 },
-        //    { 0, 0, 0, 0, 0, 0 },   
-        //};
-
         // initialize the map
-        map = new int[20, 20];
+        map = new int[10, 20];
 
-        cubes = new GameObject[map.GetLength(0), map.GetLength(1)];
-
-        // camera position and size
-        Camera.main.transform.position = new Vector3(map.GetLength(1) / 2, map.GetLength(0) / 2, -10);
-        Camera.main.orthographicSize = Mathf.Max(map.GetLength(1) / 2, map.GetLength(0) / 2);
-
-        // create the patterns
-        CreateBlock(map, 10, 2);
-        CreateBlock(map, 10, 5);
+        //// create the patterns
+        //CreateBlock(map, 10, 2);
+        //CreateBlock(map, 10, 5);
 
         // transpose the map and reflect it across the middle line
         //int[,] newMap = new int[map.GetLength(1), map.GetLength(0)];
@@ -52,34 +38,54 @@ public class Map : MonoBehaviour
         //}
         //map = newMap;
 
+        // test
+        map = new int[,] {
+            { 0, 0, 0, 0, 0, 0 },
+            { 0, 1, 1, 1, 0, 0 },
+            { 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0 },
+        };
+
+        // initialize cube array
+        cubes = new GameObject[map.GetLength(0), map.GetLength(1)];
+
+        // camera position and size
+        Camera.main.transform.position = new Vector3(map.GetLength(1) / 2, map.GetLength(0) / 2, -10);
+        Camera.main.orthographicSize = Mathf.Max(map.GetLength(1) / 2, map.GetLength(0) / 2);
+
         // generate the cubes
+        GameObject cubesParent = new GameObject("Cube");
         for (int i = 0; i < map.GetLength(0); i++)
         {
             for (int j = 0; j < map.GetLength(1); j++)
             {
                 if (map[i, j] == 1)
                 {
-                    cubes[i, j] = Instantiate(cube, GetWorldPosFromArrayIndices(i, j), Quaternion.identity);
+                    cubes[i, j] = Instantiate(cube, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
                 }
             }
         }
 
         // generate the lines of the grid
-        GameObject grid = new GameObject("Grid");
+        GameObject gridParent = new GameObject("Grid");
 
         // horizontal lines
+        float lineLength = map.GetLength(1);
+        line.transform.localScale = new Vector3(lineLength, 0.1f, 1);
         for (int i = 0; i < map.GetLength(0); i++)
         {
-            Instantiate(line, new Vector3(0, i + 0.5f, 0), Quaternion.identity, grid.transform);
+            Instantiate(line, new Vector3((lineLength-1)/2, i + 0.5f, 0), Quaternion.identity, gridParent.transform);
         }
-        Instantiate(line, new Vector3(0, -0.5f, 0), Quaternion.identity, grid.transform);
+        Instantiate(line, new Vector3((lineLength-1)/2, -0.5f, 0), Quaternion.identity, gridParent.transform);
 
         // vertical lines
+        lineLength = map.GetLength(0);
+        line.transform.localScale = new Vector3(lineLength, 0.1f, 1);
         for (int i = 0; i < map.GetLength(1); i++)
         {
-           Instantiate(line, new Vector3(i + 0.5f, 0, 0), Quaternion.Euler(0, 0, 90), grid.transform);
+            Instantiate(line, new Vector3(i + 0.5f, (lineLength-1)/2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
         }
-        Instantiate(line, new Vector3(-0.5f, 0, 0), Quaternion.Euler(0, 0, 90), grid.transform);
+        Instantiate(line, new Vector3(-0.5f, (lineLength-1)/2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
 
         // start the time
         curTime = transitionTime;
@@ -92,7 +98,6 @@ public class Map : MonoBehaviour
         map[i, j + 1] = 1;
         map[i + 1, j + 1] = 1;
     }
-
 
     private void Update()
     {
