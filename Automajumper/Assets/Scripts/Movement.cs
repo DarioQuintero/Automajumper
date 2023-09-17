@@ -82,14 +82,9 @@ public class Movement : MonoBehaviour
 
             if (jumpPressedDown && rb.velocity.y > 0f && boost > 0) 
             {
-                if (boost <= 24 && boost % 4 == 0)
-                {
-                    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 1.1f);
-                
-                }
-                   
-                boost --;
-            
+                if (boost <= 24 && boost % 4 == 0) rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 1.1f);
+                boost--;
+
             }
 
 
