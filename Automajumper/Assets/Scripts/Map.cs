@@ -5,6 +5,8 @@ using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class Map : MonoBehaviour
 {
+    public bool paused;
+
     [SerializeField] GameObject cube;
     [SerializeField] GameObject line;
 
@@ -165,7 +167,8 @@ public class Map : MonoBehaviour
 
     private void Update()
     {
-        curTime -= Time.deltaTime;
+        if (!paused)
+            curTime -= Time.deltaTime;
 
         // for every transition time
         if (curTime < 0)
