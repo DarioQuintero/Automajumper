@@ -135,7 +135,7 @@ public class Map : MonoBehaviour
         // camera position and size
         Camera.main.transform.position = new Vector3(map.GetLength(1) / 2, map.GetLength(0) / 2, -10);
         //Camera.main.orthographicSize = Mathf.Max(map.GetLength(1) / 2, map.GetLength(0) / 2);
-        Camera.main.orthographicSize = 25;
+        Camera.main.orthographicSize = 12;
 
         // generate the cubes
         cubesParent = new GameObject("Cube");
