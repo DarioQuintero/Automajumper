@@ -5,3 +5,13 @@
 $2o53bo12b2o$16bo$15bobo$15bobo$16bo!
 
 Level 2
+53 89
+!o78b2o$79b2o2$79b4o$78bo4bob2o$78bo3b2ob2o$70bo4b2obob2obo$70bo4b2obo
+4bo$70bo8b4o2$69bo11b2o$67bo3b4o6b2o$67bo3bo$67bo$70bo$63bo4b2o$63bo23b
+2o$63bo22bobo$86b2o$54bo4b3o3b3o$53bobo$54bo8bo$63bo$63bo$52bobo$50bo
+bobobo2$51bo3bo2$51bobobo29bo$50b3ob3o27bobo$45b2o38bo$45b2o2$43b4o$30b
+o8b2obo4bo$28bo3b4o3b2ob2o3bo$28bo3bo9bob2obob2o$10bo17bo13bo4bob2o$10b
+o20bo11b4o$10bo18b2o$18bo24b2o$2o4b3o3b3o3bo24b2o$2o16bo$10bo12bo3b2o
+$10bo12bo3bobo$10bo12bo4b2o5$87b2o$87b2o!
+
+Level 3

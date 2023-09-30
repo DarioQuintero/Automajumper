@@ -15,7 +15,10 @@ public class LevelProcessor : MonoBehaviour
     {
         // get string to process by slicing using Level [num] and Level [num + 1]
         string toProcess = Resources.Load<TextAsset>("LevelData").ToString();
-        toProcess = toProcess.Substring(toProcess.IndexOf("Level " + levelNum), toProcess.IndexOf("Level " + (levelNum + 1)));
+        int startIndex = toProcess.IndexOf("Level " + levelNum);
+        int endIndex = toProcess.IndexOf("Level " + (levelNum + 1));
+        toProcess = toProcess.Substring(startIndex, endIndex - startIndex);
+        Debug.Log(toProcess);
 
         // get the size of the map
         string[] sizeList = toProcess.Split("\n")[1].Split();
