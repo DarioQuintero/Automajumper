@@ -7,12 +7,12 @@ using UnityEngine.InputSystem;
 public class Movement : MonoBehaviour
 {
     private bool falling;
-    [SerializeField] float fallMultiplier = 2.5f;
-    [SerializeField] float defaultMultiplier = 2f;
+    private float fallMultiplier = 7f;
+    private float defaultMultiplier = 4f;
     private float horizontal;
     private bool jumpPressedDown;
     private float speed = 8f;
-    [SerializeField] float jumpingPower = 6.5f;
+    private float jumpingPower = 18f;
     private bool faceRight = true;
     // Start is called before the first frame update
     [SerializeField] private Rigidbody rb;
