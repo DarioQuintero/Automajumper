@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
 
     private bool IsGrounded() 
     {
-        return Physics.OverlapSphere(groundCheck.position, 0.35f, groundLayer).Length != 0;
+        return Physics.OverlapSphere(groundCheck.position, 0.15f, groundLayer).Length != 0;
     }
 
     public void OnRun(InputAction.CallbackContext context)
