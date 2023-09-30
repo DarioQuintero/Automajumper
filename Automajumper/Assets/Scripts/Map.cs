@@ -19,111 +19,11 @@ public class Map : MonoBehaviour
 
     public bool paused;
 
-    void Awake()
+    void Start()
     {
         instance = this;
-
-        // initialize the map
-        //map = new int[30, 70];
-
-        // create the patterns
-
-        // blocks
-        //CreateBlock(map, 18, 0);
-        //CreateBlock(map, 17, 5);
-        //CreateBlock(map, 15, 9);
-        //CreateBlock(map, 8, 24);
-        //CreateBlock(map, 18, 68);
-
-        //// honey combs
-        //CreateHorizontalHoneyComb(map, 15, 17);
-        //CreateHorizontalHoneyComb(map, 12, 32);
-
-        //CreateVerticalHoneyComb(map, 20, 15);
-        //CreateVerticalHoneyComb(map, 15, 39);
-
-        //// blinker
-        //CreateHorizontalBlinker(map, 13, 22);
-        //CreateHorizontalBlinker(map, 8, 30);
-        //CreateHorizontalBlinker(map, 11, 50);
-        //CreateHorizontalBlinker(map, 17, 60);
-
-        //CreateVerticalBlinker(map, 11, 41);
-        //CreateVerticalBlinker(map, 17, 55);
-
-        //CreateLevel(map);
-
-        // transpose the map and reflect it across the middle line
-        //int[,] newMap = new int[map.GetLength(1), map.GetLength(0)];
-
-        //for (int i = 0; i < map.GetLength(0); i++)
-        //{
-        //    for (int j = 0; j < map.GetLength(1); j++)
-        //    {
-        //        newMap[j, map.GetLength(0) - i - 1] = map[i, j];
-        //    }
-        //}
-        //map = newMap;
-
-        // test
-        //map = new int[,] {
-        //    { 0, 0, 0, 0, 0, 0 },
-        //    { 0, 1, 1, 1, 0, 0 },
-        //    { 0, 0, 0, 0, 0, 0 },
-        //    { 0, 0, 0, 0, 0, 0 },
-        //};
+        LevelProcessor.instance.processLevel(1);
     }
-
-    #region Patterns
-
-    private void CreateBlock(int[,] map, int i, int j)
-    {
-        map[i, j] = 1;
-        map[i + 1, j] = 1;
-        map[i, j + 1] = 1;
-        map[i + 1, j + 1] = 1;
-    }
-
-    private void CreateHorizontalHoneyComb(int[,] map, int i, int j)
-    {
-        map[i, j + 1] = 1;
-        map[i, j + 2] = 1;
-
-        map[i + 1, j] = 1;
-        map[i + 1, j + 3] = 1;
-
-        map[i + 2, j + 1] = 1;
-        map[i + 2, j + 2] = 1;
-    }
-
-    private void CreateVerticalHoneyComb(int[,] map, int i, int j)
-    {
-        map[i, j + 1] = 1;
-
-        map[i + 1, j] = 1;
-        map[i + 1, j + 2] = 1;
-
-        map[i + 2, j] = 1;
-        map[i + 2, j + 2] = 1;
-
-        map[i + 3, j + 1] = 1;
-    }
-
-    private void CreateHorizontalBlinker(int[,] map, int i, int j)
-    {
-        map[i, j] = 1;
-        map[i, j + 1] = 1;
-        map[i, j + 2] = 1;
-    }
-
-    private void CreateVerticalBlinker(int[,] map, int i, int j)
-    {
-        map[i, j] = 1;
-        map[i + 1, j] = 1;
-        map[i + 2, j] = 1;
-    }
-
-    #endregion
 
     public void CreateLevel(int[,] mapToCreate)
     {
@@ -174,7 +74,6 @@ public class Map : MonoBehaviour
         // start the time
         curTime = transitionTime;
     }
-
 
     private void Update()
     {
