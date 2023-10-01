@@ -6,6 +6,8 @@ public class LevelCreator : MonoBehaviour
 {
     public static LevelCreator instance;
 
+    public Vector3 respawnPosition;
+
     public void Awake()
     {
         instance = this;
