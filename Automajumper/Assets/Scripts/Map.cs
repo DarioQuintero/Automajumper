@@ -15,7 +15,6 @@ public class Map : MonoBehaviour
     private int[,] map;
     private GameObject[,] cubes;
 
-    [SerializeField] float transitionTime;
     [SerializeField] float curTime;
 
     public bool paused;
@@ -80,7 +79,7 @@ public class Map : MonoBehaviour
         Instantiate(line, new Vector3(-0.5f, (lineLength - 1) / 2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
 
         // start the time
-        curTime = transitionTime;
+        curTime = Config.secondsPerUpdate;
     }
 
     private void Update()
@@ -91,7 +90,7 @@ public class Map : MonoBehaviour
         // for every transition time
         if (curTime < 0)
         {
-            curTime = transitionTime;
+            curTime = Config.secondsPerUpdate;
 
             // update the map
             int[,] newMap = new int[map.GetLength(0), map.GetLength(1)];
