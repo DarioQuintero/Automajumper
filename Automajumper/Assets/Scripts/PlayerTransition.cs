@@ -15,5 +15,11 @@ public class PlayerTransition : MonoBehaviour
         {
             transform.position = LevelCreator.instance.respawnPosition;
         }
+
+        //else
+        //{
+        //    Vector3 collidePos = collision.gameObject.transform.position;
+        //    transform.position = new Vector3(collidePos.x, collidePos.y + 1, collidePos.z); 
+        //}
     }
 }
