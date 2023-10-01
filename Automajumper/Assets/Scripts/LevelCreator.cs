@@ -37,18 +37,14 @@ public class LevelCreator : MonoBehaviour
         string[] dataLines = data.Split("\n");
 
         // if there is only one line left, then there is no red block
-        if (dataLines.Length == 1)
-        {
-            processFinishLine(dataLines, map);
-        }
-        else
+        if (dataLines.Length != 1)
         {
             // assign red blocks
             index = AssignBlocks(data, map, 2);
+            data = data.Substring(index + 3); // +3 to get rid of the two new lines
+            dataLines = data.Split("\n");
         }
 
-        data = data.Substring(index + 3); // +3 to get rid of the two new lines
-        dataLines = data.Split("\n");
         processFinishLine(dataLines, map);
     }
 

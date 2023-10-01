@@ -7,7 +7,8 @@ public class Map : MonoBehaviour
 {
     public static Map instance;
 
-    [SerializeField] GameObject cube;
+    [SerializeField] GameObject block;
+    [SerializeField] GameObject killerBlock;
     [SerializeField] GameObject line;
 
     private GameObject cubesParent;
@@ -45,7 +46,11 @@ public class Map : MonoBehaviour
             {
                 if (map[i, j] == 1)
                 {
-                    cubes[i, j] = Instantiate(cube, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                    cubes[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                }
+                else if (map[i, j] == 2)
+                {
+                    cubes[i, j] = Instantiate(killerBlock, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
                 }
             }
         }
@@ -98,7 +103,7 @@ public class Map : MonoBehaviour
                     newMap[i, j] = map[i, j];
 
                     // rules for alive cell
-                    if (map[i, j] == 1)
+                    if (map[i, j] != 0)
                     {
                         int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
                         if (numOfAliveNeighbors < 2 || numOfAliveNeighbors > 3)
@@ -110,10 +115,16 @@ public class Map : MonoBehaviour
                     // rules for dead cell
                     else
                     {
-                        if (CountAliveNeighbors(map, i, j) == 3)
+                        if (CountAliveNeighbors(map, i, j, 1) == 3)
                         {
-                            cubes[i, j] = Instantiate(cube, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                            cubes[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
                             newMap[i, j] = 1;
+                        }
+
+                        if (CountAliveNeighbors(map, i, j, 2) == 3)
+                        {
+                            cubes[i, j] = Instantiate(killerBlock, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                            newMap[i, j] = 2;
                         }
                     }
                 }
@@ -135,29 +146,66 @@ public class Map : MonoBehaviour
         int ans = 0;
 
         // left and right neighbors
-        if (j - 1 >= 0 && map[i, j - 1] == 1)
+        if (j - 1 >= 0 && map[i, j - 1] != 0)
             ans++;
-        if (j + 1 < map.GetLength(1) && map[i, j + 1] == 1)
+        if (j + 1 < map.GetLength(1) && map[i, j + 1] != 0)
             ans++;
 
         // top three neighbors
-        if (i - 1 >= 0) {
-            if (map[i - 1, j] == 1)
+        if (i - 1 >= 0)
+        {
+            if (map[i - 1, j] != 0)
                 ans++;
-            if (j - 1 >= 0 && map[i - 1, j - 1] == 1)
+            if (j - 1 >= 0 && map[i - 1, j - 1] != 0)
                 ans++;
-            if (j + 1 < map.GetLength(1) && map[i - 1, j + 1] == 1)
+            if (j + 1 < map.GetLength(1) && map[i - 1, j + 1] != 0)
                 ans++;
         }
 
         // top three neighbors
         if (i + 1 < map.GetLength(0))
         {
-            if (map[i + 1, j] == 1)
+            if (map[i + 1, j] != 0)
                 ans++;
-            if (j - 1 >= 0 && map[i + 1, j - 1] == 1)
+            if (j - 1 >= 0 && map[i + 1, j - 1] != 0)
                 ans++;
-            if (j + 1 < map.GetLength(1) && map[i + 1, j + 1] == 1)
+            if (j + 1 < map.GetLength(1) && map[i + 1, j + 1] != 0)
+                ans++;
+        }
+
+        return ans;
+    }
+
+    // count the alive neighbors of this cell in coordinate i, j in the map
+    int CountAliveNeighbors(int[,] map, int i, int j, int type)
+    {
+        int ans = 0;
+
+        // left and right neighbors
+        if (j - 1 >= 0 && map[i, j - 1] == type)
+            ans++;
+        if (j + 1 < map.GetLength(1) && map[i, j + 1] == type)
+            ans++;
+
+        // top three neighbors
+        if (i - 1 >= 0)
+        {
+            if (map[i - 1, j] == type)
+                ans++;
+            if (j - 1 >= 0 && map[i - 1, j - 1] == type)
+                ans++;
+            if (j + 1 < map.GetLength(1) && map[i - 1, j + 1] == type)
+                ans++;
+        }
+
+        // top three neighbors
+        if (i + 1 < map.GetLength(0))
+        {
+            if (map[i + 1, j] == type)
+                ans++;
+            if (j - 1 >= 0 && map[i + 1, j - 1] == type)
+                ans++;
+            if (j + 1 < map.GetLength(1) && map[i + 1, j + 1] == type)
                 ans++;
         }
 

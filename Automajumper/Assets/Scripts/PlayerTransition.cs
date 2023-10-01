@@ -11,7 +11,7 @@ public class PlayerTransition : MonoBehaviour
             LevelManager.instance.nextLevel();
         }
 
-        else if (collision.gameObject.CompareTag("Bound"))
+        else if (collision.gameObject.CompareTag("Killer"))
         {
             transform.position = LevelCreator.instance.respawnPosition;
         }
