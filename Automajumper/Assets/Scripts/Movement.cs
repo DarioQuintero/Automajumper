@@ -75,8 +75,7 @@ public class Movement : MonoBehaviour
         if (!jumpPressedDown) {
             falling = true;
         }
-        flip();
-        
+        //flip();
     }
     private void FixedUpdate()
     {

@@ -14,18 +14,18 @@ public class LevelProcessor : MonoBehaviour
     public void processLevel(int levelNum)
     {
         // get string to process by slicing using Level [num] and Level [num + 1]
-        string toProcess = Resources.Load<TextAsset>("LevelData").ToString();
-        int startIndex = toProcess.IndexOf("Level " + levelNum);
-        int endIndex = toProcess.IndexOf("Level " + (levelNum + 1));
-        toProcess = toProcess.Substring(startIndex, endIndex - startIndex);
-        Debug.Log(toProcess);
+        string toProcess = Resources.Load<TextAsset>("Level" + levelNum).ToString();
+        //int startIndex = toProcess.IndexOf("Level " + levelNum);
+        //int endIndex = toProcess.IndexOf("Level " + (levelNum + 1));
+        //toProcess = toProcess.Substring(startIndex, endIndex - startIndex);
 
         // get the size of the map
-        string[] sizeList = toProcess.Split("\n")[1].Split();
+        int separatorIndex = toProcess.IndexOf('\n');
+        string[] sizeList = toProcess.Substring(0, separatorIndex).Split();
         int[] size = { int.Parse(sizeList[0]), int.Parse(sizeList[1]) };
 
         // block data is everything after the size data
-        string blockData = toProcess.Substring(toProcess.IndexOf("!") + 1);
+        string blockData = toProcess.Substring(separatorIndex + 1);
 
         // initialize for the loop
         int[,] map = new int[size[0], size[1]];
