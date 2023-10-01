@@ -19,13 +19,12 @@ public class Map : MonoBehaviour
 
     public bool paused;
 
-    void Start()
+    void Awake()
     {
         instance = this;
-        LevelProcessor.instance.processLevel(2);
     }
 
-    public void CreateLevel(int[,] mapToCreate)
+    public void CreateLevel(int[,] mapToCreate, string[] finishLineCoord)
     {
         map = mapToCreate;
 
@@ -50,6 +49,9 @@ public class Map : MonoBehaviour
                 }
             }
         }
+
+        // mark the finishline cube
+        cubes[int.Parse(finishLineCoord[0]), int.Parse(finishLineCoord[1])].tag = "FinishLine";
 
         // generate the lines of the grid
         GameObject gridParent = new GameObject("Grid");

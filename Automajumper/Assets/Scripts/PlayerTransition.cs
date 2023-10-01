@@ -7,6 +7,9 @@ public class PlayerTransition : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject.CompareTag("FinishLine"))
+        {
+            LevelManager.instance.nextLevel();
+        }
     }
 }

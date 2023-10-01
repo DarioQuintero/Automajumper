@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelProcessor : MonoBehaviour
+public class LevelCreator : MonoBehaviour
 {
-    public static LevelProcessor instance;
+    public static LevelCreator instance;
 
     public void Awake()
     {
         instance = this;
     }
 
-    public void processLevel(int levelNum)
+    public void createLevel(int levelNum)
     {
         // get string to process by slicing using Level [num] and Level [num + 1]
         string toProcess = Resources.Load<TextAsset>("Level" + levelNum).ToString();
@@ -76,6 +76,10 @@ public class LevelProcessor : MonoBehaviour
             index++;
         }
 
-        Map.instance.CreateLevel(map);
+        // get coordinate of finishline
+        string[] finishLineCoord = blockData.Substring(index + 2).Split();
+
+        // create the game objects for the level
+        Map.instance.CreateLevel(map, finishLineCoord);
     }
 }
