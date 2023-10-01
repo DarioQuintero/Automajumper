@@ -15,11 +15,8 @@ public class LevelCreator : MonoBehaviour
 
     public void createLevel(int levelNum)
     {
-        // get string to process by slicing using Level [num] and Level [num + 1]
+        // get string to process 
         string toProcess = Resources.Load<TextAsset>("Level" + levelNum).ToString();
-        //int startIndex = toProcess.IndexOf("Level " + levelNum);
-        //int endIndex = toProcess.IndexOf("Level " + (levelNum + 1));
-        //toProcess = toProcess.Substring(startIndex, endIndex - startIndex);
 
         // get the size of the map
         int separatorIndex = toProcess.IndexOf('\n');
@@ -27,19 +24,52 @@ public class LevelCreator : MonoBehaviour
         int[] size = { int.Parse(sizeList[0]), int.Parse(sizeList[1]) };
 
         // block data is everything after the size data
-        string blockData = toProcess.Substring(separatorIndex + 1);
+        string data = toProcess.Substring(separatorIndex + 1);
 
         // initialize for the loop
         int[,] map = new int[size[0], size[1]];
+
+        // assign normal blocks
+        int index = AssignBlocks(data, map, 1);
+
+        // get the rest of the data
+        data = data.Substring(index + 3); // +3 to get rid of the two new lines
+        string[] dataLines = data.Split("\n");
+
+        // if there is only one line left, then there is no red block
+        if (dataLines.Length == 1)
+        {
+            processFinishLine(dataLines, map);
+        }
+        else
+        {
+            // assign red blocks
+            index = AssignBlocks(data, map, 2);
+        }
+
+        data = data.Substring(index + 3); // +3 to get rid of the two new lines
+        dataLines = data.Split("\n");
+        processFinishLine(dataLines, map);
+    }
+
+    void processFinishLine(string[] lastLine, int[,] map)
+    {
+        // create the game objects for the level with finish line
+        Map.instance.CreateLevel(map, lastLine[0].Split());
+    }
+    
+
+    int AssignBlocks(string data, int[,] map, int type)
+    {
         int index = 0;
         int[] curIndices = { 0, 0 };
         string curNum = "";
-        while (blockData[index] != '!')
+        while (data[index] != '!')
         {
             // build up the current number
-            if (System.Char.IsDigit(blockData[index]))
+            if (System.Char.IsDigit(data[index]))
             {
-                curNum += blockData[index];
+                curNum += data[index];
             }
             else
             {
@@ -52,23 +82,23 @@ public class LevelCreator : MonoBehaviour
                 curNum = "";
 
                 // empty spaces
-                if (blockData[index] == 'b')
+                if (data[index] == 'b')
                 {
                     curIndices[1] += count;
                 }
 
                 // blocks
-                else if (blockData[index] == 'o')
+                else if (data[index] == 'o')
                 {
                     while (count-- > 0)
                     {
-                        map[curIndices[0], curIndices[1]] = 1;
+                        map[curIndices[0], curIndices[1]] = type;
                         curIndices[1]++;
                     }
                 }
 
                 // skip line
-                else if (blockData[index] == '$')
+                else if (data[index] == '$')
                 {
                     curIndices[0] += count;
                     curIndices[1] = 0;
@@ -78,10 +108,6 @@ public class LevelCreator : MonoBehaviour
             index++;
         }
 
-        // get coordinate of finishline
-        string[] finishLineCoord = blockData.Substring(index + 2).Split();
-
-        // create the game objects for the level
-        Map.instance.CreateLevel(map, finishLineCoord);
+        return index;
     }
 }
