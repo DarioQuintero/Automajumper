@@ -92,5 +92,11 @@ public class Movement : MonoBehaviour
         }
     }
     
+    void OnTriggerStay(Collider other) {
+        if (other.tag == "Checkpoint" && IsGrounded()) {
+            LevelCreator.instance.respawnPosition = other.transform.position;
+            Destroy(other.gameObject);
+        }
+    }
 }
 

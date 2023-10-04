@@ -1,4 +1,5 @@
 ﻿16 70
+CP 18.5 9 40 9 45.5 14
 o23b2o4b3o$24b2o$45b2o$41bo3b2o3b3o$33b2o6bo$22b3o7bo2bo5bo$33b2o$9b2o
 7b2o20bo$9b2o6bo2bo18bobo$5b2o11b2o19bobo13bo4b3o$2o3b2o33bo14bo12b2o
 $2o53bo12b2o$16bo$15bobo$15bobo$16bo!

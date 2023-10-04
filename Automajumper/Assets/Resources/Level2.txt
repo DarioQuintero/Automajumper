@@ -1,4 +1,5 @@
 ﻿53 95
+CP 28 9 45.5 22 54 34 85.5 49 87.5 37 85 24
 o78b2o$79b2o2$79b4o$78bo4bob2o$78bo3b2ob2o$70bo4b2obob2obo$70bo4b2obo
 4bo$70bo8b4o2$69bo11b2o$67bo3b4o6b2o$67bo3bo$67bo$70bo$63bo4b2o$63bo23b
 2o$63bo22bobo$86b2o$54bo4b3o3b3o$53bobo$54bo8bo$63bo$63bo$52bobo$50bo

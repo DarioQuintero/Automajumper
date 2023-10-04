@@ -23,8 +23,13 @@ public class LevelCreator : MonoBehaviour
         string[] sizeList = toProcess.Substring(0, separatorIndex).Split();
         int[] size = { int.Parse(sizeList[0]), int.Parse(sizeList[1]) };
 
+        string data_and_checkpoint = toProcess.Substring(separatorIndex + 1);
+        
+        int newline2 = data_and_checkpoint.IndexOf('\n');
+        string[] checkpoints = data_and_checkpoint.Substring(3, newline2 - 3).Split(); // ignore the letters "CP"
+
         // block data is everything after the size data
-        string data = toProcess.Substring(separatorIndex + 1);
+        string data = data_and_checkpoint.Substring(newline2 + 1);
 
         // initialize for the loop
         int[,] map = new int[size[0], size[1]];
@@ -44,14 +49,13 @@ public class LevelCreator : MonoBehaviour
             data = data.Substring(index + 3); // +3 to get rid of the two new lines
             dataLines = data.Split("\n");
         }
-
-        processFinishLine(dataLines, map);
+        processFinishLine(dataLines, map, checkpoints);
     }
 
-    void processFinishLine(string[] lastLine, int[,] map)
+    void processFinishLine(string[] lastLine, int[,] map, string[] checkpoints)
     {
         // create the game objects for the level with finish line
-        Map.instance.CreateLevel(map, lastLine[0].Split());
+        Map.instance.CreateLevel(map, lastLine[0].Split(), checkpoints);
     }
     
 
