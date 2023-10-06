@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     private float horizontal;
     private bool jumpPressedDown;
     private float speed = 8f;
-    private float jumpingPower = 18f;
+    private float jumpingPower = 19f;
     private bool faceRight = true;
     // Start is called before the first frame update
     [SerializeField] private Rigidbody rb;
