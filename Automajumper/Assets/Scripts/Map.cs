@@ -73,25 +73,25 @@ public class Map : MonoBehaviour
         }
 
         // generate the lines of the grid
-        GameObject gridParent = new GameObject("Grid");
+        // GameObject gridParent = new GameObject("Grid");
 
-        // horizontal lines
-        float lineLength = map.GetLength(1);
-        line.transform.localScale = new Vector3(lineLength, 0.1f, 1);
-        for (int i = 0; i < map.GetLength(0); i++)
-        {
-            Instantiate(line, new Vector3((lineLength - 1) / 2, i + 0.5f, 0), Quaternion.identity, gridParent.transform);
-        }
-        Instantiate(line, new Vector3((lineLength - 1) / 2, -0.5f, 0), Quaternion.identity, gridParent.transform);
+        // // horizontal lines
+        // float lineLength = map.GetLength(1);
+        // line.transform.localScale = new Vector3(lineLength, 0.1f, 1);
+        // for (int i = 0; i < map.GetLength(0); i++)
+        // {
+        //     Instantiate(line, new Vector3((lineLength - 1) / 2, i + 0.5f, 0), Quaternion.identity, gridParent.transform);
+        // }
+        // Instantiate(line, new Vector3((lineLength - 1) / 2, -0.5f, 0), Quaternion.identity, gridParent.transform);
 
-        // vertical lines
-        lineLength = map.GetLength(0);
-        line.transform.localScale = new Vector3(lineLength, 0.1f, 1);
-        for (int i = 0; i < map.GetLength(1); i++)
-        {
-            Instantiate(line, new Vector3(i + 0.5f, (lineLength - 1) / 2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
-        }
-        Instantiate(line, new Vector3(-0.5f, (lineLength - 1) / 2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
+        // // vertical lines
+        // lineLength = map.GetLength(0);
+        // line.transform.localScale = new Vector3(lineLength, 0.1f, 1);
+        // for (int i = 0; i < map.GetLength(1); i++)
+        // {
+        //     Instantiate(line, new Vector3(i + 0.5f, (lineLength - 1) / 2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
+        // }
+        // Instantiate(line, new Vector3(-0.5f, (lineLength - 1) / 2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
 
         // start the time
         curTime = Config.secondsPerUpdate;
