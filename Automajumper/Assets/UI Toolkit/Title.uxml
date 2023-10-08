@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; width: 100%; height: 25%; align-items: auto; background-color: rgba(192, 173, 173, 0);" />
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; background-color: rgba(49, 33, 188, 0); visibility: visible; height: 35%; width: auto; align-items: flex-start; justify-content: flex-start;">
+        <ui:Label tabindex="-1" text="AutomaJumper" parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" style="align-items: center; justify-content: center; align-self: center; height: auto; font-size: 75px;" />
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1; width: 100%; height: 40%; justify-content: center; align-self: auto; align-items: stretch;">
+        <ui:Button text="Play" parse-escape-sequences="true" display-tooltip-when-elided="true" name="navigateBtn" enable-rich-text="false" style="align-items: center; align-self: center; justify-content: flex-start; max-width: none; max-height: none; font-size: 30px; width: 25%;" />
+    </ui:VisualElement>
+</ui:UXML>
