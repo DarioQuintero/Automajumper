@@ -17,6 +17,7 @@ public class LevelCreator : MonoBehaviour
     {
         // get string to process 
         string toProcess = Resources.Load<TextAsset>("Level" + levelNum).ToString();
+        toProcess = toProcess.Replace("\r\n", "\n");
 
         // get the size of the map
         int separatorIndex = toProcess.IndexOf('\n');
