@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 public class LevelCreator : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class LevelCreator : MonoBehaviour
         // get string to process 
         string toProcess = Resources.Load<TextAsset>("Level" + levelNum).ToString();
         toProcess = toProcess.Replace("\r\n", "\n");
+        //Debug.Log(Regex.Replace(toProcess, @"\\", @"\\\\"));
 
         // get the size of the map
         int separatorIndex = toProcess.IndexOf('\n');
