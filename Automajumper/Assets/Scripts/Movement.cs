@@ -6,21 +6,22 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    private bool acceleratedFalling;
     private float fallMultiplier = 7f;
     private float defaultMultiplier = 4f;
     private float horizontal;
-    private bool jumpPressedDown;
     private float speed = 8f;
     private float jumpingPower = 19f;
     private bool faceRight = true;
+
+    private bool jumpPressedDown;
     private bool singleJumpUnused;
-    // Start is called before the first frame update
+    private bool acceleratedFalling;
+
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
-    private bool IsGrounded() 
+    private bool IsGrounded()
     {
         return Physics.OverlapSphere(groundCheck.position, 0.15f, groundLayer).Length != 0;
     }
@@ -32,22 +33,18 @@ public class Movement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        /*
-        if(context.started && IsGrounded())
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-        }
-        */
-
-        // only can jump when grounded and didn't used the single jump
+        // only can jump when landed and didn't used the single jump
         if(context.started && IsGrounded() && singleJumpUnused)
         {
-            jumpPressedDown = true;
+            acceleratedFalling = false;
             singleJumpUnused = false;
+            jumpPressedDown = true;
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
-
-        if(context.canceled)
+        else if(context.canceled)
         {
+            // experience accelerated falling if not pressing jumping 
+            acceleratedFalling = true;
             jumpPressedDown = false;
         }
     }
@@ -58,13 +55,8 @@ public class Movement : MonoBehaviour
         // when grounded
         if (IsGrounded())
         {
-            // jump if the key is pressed
-            if (jumpPressedDown)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-            }
             // if the jump key is released
-            else
+            if (!jumpPressedDown)
             {
                 // you can jump again now
                 singleJumpUnused = true;
@@ -72,29 +64,26 @@ public class Movement : MonoBehaviour
 
             // prevent hold jump key to jump
             if (!singleJumpUnused)
+            {
                 jumpPressedDown = false;
+            }
         }
-
-        Debug.Log(jumpPressedDown);
-
-        // if not pressing jumping, then you experience accelerated falling
-        if (!jumpPressedDown)
-            acceleratedFalling = true;
 
         // smoother jump George wrote; can't help to explain
         if (acceleratedFalling || rb.velocity.y < 1.3) {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            rb.velocity += (fallMultiplier - 1) * Physics.gravity.y * Time.deltaTime * Vector3.up;
         } else {
-            rb.velocity += Vector3.up * Physics.gravity.y * (defaultMultiplier - 1) * Time.deltaTime;
+            rb.velocity += (defaultMultiplier - 1) * Physics.gravity.y * Time.deltaTime * Vector3.up;
         }
 
         //flip();
     }
+
     private void FixedUpdate()
     {
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-
     }
+
     private void flip()
     {
         if(faceRight && horizontal < 0f || !faceRight && horizontal > 0f) {
@@ -104,12 +93,33 @@ public class Movement : MonoBehaviour
             transform.localScale = localScale;
         }
     }
-    
-    void OnTriggerStay(Collider other) {
-        if (other.tag == "Checkpoint" && IsGrounded()) {
+
+    //// landed when collide with a ground 
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground")
+    //        landed = true;
+    //}
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Checkpoint") && IsGrounded())
+        {
             LevelCreator.instance.respawnPosition = other.transform.position;
             Destroy(other.gameObject);
         }
     }
+
+    // set respawn position when touch a check point
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log(other);
+    //    Debug.Log(other.gameObject.CompareTag("Checkpoint"));
+    //    if (other.gameObject.CompareTag("Checkpoint") && IsGrounded())
+    //    {
+    //        LevelCreator.instance.respawnPosition = other.transform.position;
+    //        Destroy(other.gameObject);
+    //    }
+    //}
 }
 
