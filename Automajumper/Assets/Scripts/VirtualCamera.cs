@@ -20,9 +20,9 @@ public class VirtualCamera : MonoBehaviour
     void Update()
     {
         Scene scene = SceneManager.GetActiveScene();
-        if (scene.name == "Level 2" && vcam.transform.position.x > 80) {
-            transposer.m_ScreenY = 0.2f;
-            transposer.m_DeadZoneHeight = 0;
-        }
+        //if (scene.name == "Level 2" && vcam.transform.position.x > 80) {
+        //    transposer.m_ScreenY = 0.2f;
+        //    transposer.m_DeadZoneHeight = 0;
+        //}
     }
 }
