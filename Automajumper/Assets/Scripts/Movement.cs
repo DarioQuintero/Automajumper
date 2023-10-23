@@ -11,24 +11,38 @@ public class Movement : MonoBehaviour
     private float horizontal;
     private float speed = 8f;
     private float jumpingPower = 19f;
-    private bool faceRight = true;
+    public bool faceRight = true;
 
     private bool jumpPressedDown;
     private bool singleJumpUnused;
     private bool acceleratedFalling;
 
+
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+    }
 
     private bool IsGrounded()
     {
-        return Physics.OverlapSphere(groundCheck.position, 0.15f, groundLayer).Length != 0;
+        bool result;
+
+        result = Physics.OverlapSphere(groundCheck.position, 0.15f, groundLayer).Length != 0;
+        anim.SetBool("Grounded", result);
+        return result;
+        
     }
 
     public void OnRun(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<float>();
+        anim.SetFloat("VelocityX", horizontal);
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -75,13 +89,27 @@ public class Movement : MonoBehaviour
         } else {
             rb.velocity += (defaultMultiplier - 1) * Physics.gravity.y * Time.deltaTime * Vector3.up;
         }
-
-        //flip();
+        /*
+        */
     }
 
     private void FixedUpdate()
     {
+        //Animation Direction Changing
+        if(horizontal>0.01 && transform.eulerAngles.y != -90f)
+        {
+            transform.eulerAngles = new Vector3(0f, -90f, 0f);
+            
+            //anim.SetTrigger("Spin");
+        }
+        if(horizontal < -0.01 && transform.eulerAngles.y != 90f)
+        {
+            transform.eulerAngles = new Vector3(0f, 90f, 0f);
+
+            //anim.SetTrigger("Spin");
+        }
         rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        anim.SetFloat("VelocityY", rb.velocity.y);
     }
 
     private void flip()
