@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2068679702403972900}
   - component: {fileID: 8740519841044301019}
-  - component: {fileID: 5381005851088461724}
   m_Layer: 0
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -73,19 +72,6 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 864305285345765739}
---- !u!114 &5381005851088461724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1553301706252503158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbe7b886188f9cf6981a81f396202e86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vcam: {fileID: 8740519841044301019}
 --- !u!1 &4816718456767122634
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +139,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 10
+  m_CameraDistance: 15
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0.4
   m_DeadZoneDepth: 0

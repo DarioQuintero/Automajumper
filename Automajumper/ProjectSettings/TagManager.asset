@@ -7,6 +7,8 @@ TagManager:
   - FinishLine
   - Killer
   - Checkpoint
+  - CameraChangeTest
+  - CameraChange
   layers:
   - Default
   - TransparentFX

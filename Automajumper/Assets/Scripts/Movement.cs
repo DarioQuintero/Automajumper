@@ -6,82 +6,112 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-    private bool falling;
     private float fallMultiplier = 7f;
     private float defaultMultiplier = 4f;
     private float horizontal;
-    private bool jumpPressedDown;
     private float speed = 8f;
     private float jumpingPower = 19f;
-    private bool faceRight = true;
-    // Start is called before the first frame update
+    public bool faceRight = true;
+
+    private bool jumpPressedDown;
+    private bool singleJumpUnused;
+    private bool acceleratedFalling;
+
+
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Animator anim;
 
-    private bool IsGrounded() 
+    private void Start()
     {
-        return Physics.OverlapSphere(groundCheck.position, 0.15f, groundLayer).Length != 0;
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private bool IsGrounded()
+    {
+        bool result;
+
+        result = Physics.OverlapSphere(groundCheck.position, 0.15f, groundLayer).Length != 0;
+        anim.SetBool("Grounded", result);
+        return result;
+        
     }
 
     public void OnRun(InputAction.CallbackContext context)
     {
         horizontal = context.ReadValue<float>();
-        
+        anim.SetFloat("VelocityX", horizontal);
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        /*
-        if(context.started && IsGrounded())
+        // only can jump when landed and didn't used the single jump
+        if(context.started && IsGrounded() && singleJumpUnused)
         {
+            acceleratedFalling = false;
+            singleJumpUnused = false;
+            jumpPressedDown = true;
             rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
-        */
-
-
-        if(context.performed)
+        else if(context.canceled)
         {
-            jumpPressedDown = true;
-        }
-        if(context.canceled)
-        {
+            // experience accelerated falling if not pressing jumping 
+            acceleratedFalling = true;
             jumpPressedDown = false;
         }
-        
     }
     
     // Update is called once per frame
     void Update()
     {
-            //horizontal = Input.GetAxisRaw("Horizontal");
-
-            /*
-            if ((Input.GetKey(KeyCode.RightArrow) && horizontal > 0) || (Input.GetKey(KeyCode.LeftArrow) && horizontal < 0)) {
-                speed *= 1.3f;
+        // when grounded
+        if (IsGrounded())
+        {
+            // if the jump key is released
+            if (!jumpPressedDown)
+            {
+                // you can jump again now
+                singleJumpUnused = true;
             }
 
-            */
-        if (IsGrounded()) {
-            falling = false;
-            if (jumpPressedDown) rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            // prevent hold jump key to jump
+            if (!singleJumpUnused)
+            {
+                jumpPressedDown = false;
+            }
         }
-            
-        if (falling || rb.velocity.y < 1.3) {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+
+        // smoother jump George wrote; can't help to explain
+        if (acceleratedFalling || rb.velocity.y < 1.3) {
+            rb.velocity += (fallMultiplier - 1) * Physics.gravity.y * Time.deltaTime * Vector3.up;
         } else {
-            rb.velocity += Vector3.up * Physics.gravity.y * (defaultMultiplier - 1) * Time.deltaTime;
+            rb.velocity += (defaultMultiplier - 1) * Physics.gravity.y * Time.deltaTime * Vector3.up;
         }
-        if (!jumpPressedDown) {
-            falling = true;
-        }
-        //flip();
+        /*
+        */
     }
+
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        //Animation Direction Changing
+        if(horizontal>0.01 && transform.eulerAngles.y != -90f)
+        {
+            transform.eulerAngles = new Vector3(0f, -90f, 0f);
+            
+            //anim.SetTrigger("Spin");
+        }
+        if(horizontal < -0.01 && transform.eulerAngles.y != 90f)
+        {
+            transform.eulerAngles = new Vector3(0f, 90f, 0f);
 
+            //anim.SetTrigger("Spin");
+        }
+        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        anim.SetFloat("VelocityY", rb.velocity.y);
     }
+
     private void flip()
     {
         if(faceRight && horizontal < 0f || !faceRight && horizontal > 0f) {
@@ -91,12 +121,33 @@ public class Movement : MonoBehaviour
             transform.localScale = localScale;
         }
     }
-    
-    void OnTriggerStay(Collider other) {
-        if (other.tag == "Checkpoint" && IsGrounded()) {
+
+    //// landed when collide with a ground 
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground")
+    //        landed = true;
+    //}
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Checkpoint") && IsGrounded())
+        {
             LevelCreator.instance.respawnPosition = other.transform.position;
             Destroy(other.gameObject);
         }
     }
+
+    // set respawn position when touch a check point
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log(other);
+    //    Debug.Log(other.gameObject.CompareTag("Checkpoint"));
+    //    if (other.gameObject.CompareTag("Checkpoint") && IsGrounded())
+    //    {
+    //        LevelCreator.instance.respawnPosition = other.transform.position;
+    //        Destroy(other.gameObject);
+    //    }
+    //}
 }
 
