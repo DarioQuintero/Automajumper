@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerTransition : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlayerTransition : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("FinishLine"))
         {
-            LevelManager.instance.nextLevel();
+            LevelManager.instance.levelTransition();
         }
 
         else if (collision.gameObject.CompareTag("Killer"))
