@@ -20,6 +20,7 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private Transform hitBox;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator anim;
 
@@ -80,6 +81,10 @@ public class Movement : MonoBehaviour
             if (!singleJumpUnused)
             {
                 jumpPressedDown = false;
+            }
+            
+            if (Physics.OverlapSphere(hitBox.position, 0.05f, groundLayer).Length != 0) {
+                transform.position = LevelCreator.instance.respawnPosition;
             }
         }
 
