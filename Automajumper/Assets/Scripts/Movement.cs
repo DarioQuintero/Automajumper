@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class Movement : MonoBehaviour
 {
     private float fallMultiplier = 7f;
@@ -17,6 +18,9 @@ public class Movement : MonoBehaviour
     private bool singleJumpUnused;
     private bool acceleratedFalling;
 
+    private float coyoteTime = 0f;
+    private bool isCoyote = true;
+
 
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform groundCheck;
@@ -29,11 +33,21 @@ public class Movement : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
     }
+    public void jump() {
+        if (singleJumpUnused) {
+            acceleratedFalling = false;
+            singleJumpUnused = false;
+            jumpPressedDown = true;
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+        }
+        // if (!jumpPressedDown) {
+        //     acceleratedFalling = true;
+        // }
+    }
 
     private bool IsGrounded()
     {
         bool result;
-
         result = Physics.OverlapSphere(groundCheck.position, 0.15f, groundLayer).Length != 0;
         anim.SetBool("Grounded", result);
         return result;
@@ -48,17 +62,19 @@ public class Movement : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
+        if (coyoteTime <= -0.09) coyoteTime = 0.5f;
         // only can jump when landed and didn't used the single jump
-        if(context.started && IsGrounded() && singleJumpUnused)
+        //singleJumpUnused && 
+        if(context.started)
         {
-            acceleratedFalling = false;
-            singleJumpUnused = false;
-            jumpPressedDown = true;
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            if (IsGrounded()) {
+                coyoteTime = -0.1f;
+            }
         }
         else if(context.canceled)
         {
             // experience accelerated falling if not pressing jumping 
+            coyoteTime = -0.1f;
             acceleratedFalling = true;
             jumpPressedDown = false;
         }
@@ -67,9 +83,19 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        coyoteTime = Math.Max(-0.1f, coyoteTime - Time.deltaTime);
+        if (coyoteTime >= 0f) {
+            isCoyote = true;
+        } else {
+            isCoyote = false;
+        }
         // when grounded
         if (IsGrounded())
         {
+            if (isCoyote) {
+                jump();
+                coyoteTime = -0.1f;
+            }
             // if the jump key is released
             if (!jumpPressedDown)
             {
@@ -83,9 +109,10 @@ public class Movement : MonoBehaviour
                 jumpPressedDown = false;
             }
             
-            if (Physics.OverlapSphere(hitBox.position, 0.05f, groundLayer).Length != 0) {
+            if (Physics.OverlapSphere(hitBox.position, 0.02f, groundLayer).Length != 0) {
                 transform.position = LevelCreator.instance.respawnPosition;
             }
+            
         }
 
         // smoother jump George wrote; can't help to explain
