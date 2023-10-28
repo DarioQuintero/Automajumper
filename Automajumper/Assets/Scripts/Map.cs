@@ -12,6 +12,7 @@ public class Map : MonoBehaviour
     [SerializeField] GameObject line;
 
     [SerializeField] GameObject checkpoint;
+    [SerializeField] GameObject finishLine;
 
     private GameObject cubesParent;
 
@@ -59,15 +60,16 @@ public class Map : MonoBehaviour
             }
         }
 
-        // mark the finishline cube
-        cubes[int.Parse(finishLineCoord[0]), int.Parse(finishLineCoord[1])].tag = "FinishLine";
+        // create the finishe line
+        Vector3 pos = new Vector3(float.Parse(finishLineCoord[0]), float.Parse(finishLineCoord[1]), 0);
+        Instantiate(checkpoint, pos, Quaternion.identity);
 
         // create the checkpoints
         Debug.Assert(checkpointCoords.Length % 2 == 0);
         GameObject checkpointParent = new GameObject("CPs");
         for (int i = 0; i < checkpointCoords.Length; i += 2) {
             //Vector3 pos = Vector3.back;
-            Vector3 pos = new Vector3(float.Parse(checkpointCoords[i]), float.Parse(checkpointCoords[i+1]), 0);
+            pos = new Vector3(float.Parse(checkpointCoords[i]), float.Parse(checkpointCoords[i+1]), 0);
             //Debug.Log(pos.x.ToString());
             Instantiate(checkpoint, pos, Quaternion.identity, checkpointParent.transform);
         }
