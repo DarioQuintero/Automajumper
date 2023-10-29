@@ -22,8 +22,7 @@ public class Map : MonoBehaviour
     private GameObject[,] cubes;
 
     [SerializeField] float curTime;
-
-    public bool paused;
+    private bool paused;
 
     void Awake()
     {
@@ -226,6 +225,17 @@ public class Map : MonoBehaviour
         }
 
         return ans;
+    }
+
+    public void changeUpdateSpeed(float updatesPerSecond)
+    {
+        if (updatesPerSecond == 0)
+            paused = true;
+        else
+        {
+            paused = false;
+            Config.secondsPerUpdate = 1f / updatesPerSecond;
+        }
     }
 }
 

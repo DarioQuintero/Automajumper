@@ -5,14 +5,14 @@ using TMPro;
 
 public class UIButtons : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI pausedButtonText;
+    //[SerializeField] TextMeshProUGUI pausedButtonText;
 
-    public void PauseButtonPressed()
-    {
-        Map.instance.paused = !Map.instance.paused;
-        if (Map.instance.paused)
-            pausedButtonText.text = "Continue";
-        else
-            pausedButtonText.text = "Pause";
-    }
+    //public void PauseButtonPressed()
+    //{
+    //    Map.instance.paused = !Map.instance.paused;
+    //    if (Map.instance.paused)
+    //        pausedButtonText.text = "Continue";
+    //    else
+    //        pausedButtonText.text = "Pause";
+    //}
 }
