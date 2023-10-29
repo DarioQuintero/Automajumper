@@ -33,6 +33,7 @@ public class Movement : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
     }
+
     public void jump() {
         if (singleJumpUnused) {
             acceleratedFalling = false;
@@ -109,9 +110,9 @@ public class Movement : MonoBehaviour
                 jumpPressedDown = false;
             }
             
-            if (Physics.OverlapSphere(hitBox.position, 0.02f, groundLayer).Length != 0) {
-                transform.position = LevelCreator.instance.respawnPosition;
-            }
+            //if (Physics.OverlapSphere(hitBox.position, 0.02f, groundLayer).Length != 0) {
+            //    transform.position = LevelCreator.instance.respawnPosition;
+            //}
             
         }
 
