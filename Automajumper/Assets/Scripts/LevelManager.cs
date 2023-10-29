@@ -20,8 +20,9 @@ public class LevelManager : MonoBehaviour
         instance = this;
     }
 
-    void Start()
+    private void Start()
     {
+        // need to be in start to make sure Level Creator instance is assigned
         LevelCreator.instance.createLevel(levelNum);
         StartCoroutine(nameof(fadeIn));
     }

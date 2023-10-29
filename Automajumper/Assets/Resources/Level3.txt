@@ -1,0 +1,14 @@
+﻿99 170
+CP -2 -2
+o6$34b2o$19b2o13bo$19b2o11bobo$26b2o4b2o$25b2obo$26bob2o$27b2o$6b3o4b
+ob2o$10b3obo7b3o79b2o$11b2o8bo3bo79bo$9b2ob2o7bo3bo79bobo$10bobobo6bo
+b2o7b2o72b2o$9b2ob2o18bobo$9bo6b2o9bo6bo$16b2o10bo5b2o$26b3o3$57b2o$57b
+o$55bobo$55b2o16$30b2o$30b2o3$33b3o$23b2o10bo5b2o$16bo6b2o9bo6bo$16b2o
+b2o18bobo$17bobobo6bob2o7b2o$16b2ob2o7bo3bo$18b2o8bo3bo$17b3obo7b3o$13b
+3o4bob2o$34b2o87b2o$33bob2o86bo32b2o$32b2obo85bobo5bo24bo3bo$33b2o4b2o
+80b2o5bobo14bo7bo5bo$26b2o11bobo86bobo14bobo4b2obo3bo8b2o$26b2o13bo87b
+o18b2o3bo5bo8b2o$41b2o91b2o12b2o4bo3bo$134b2o12b2o6b2o$145bobo$145bo11$
+95bo$93b3o$92bo$92b2o7$82b2o$81bobo5b2o$81bo7b2o$80b2o2$94bo$90b2obob
+o$89bobobobo$86bo2bobobobob2o$86b4ob2o2bo2bo$90bo4b2o$88bobo$88b2o!
+
+-1 -1

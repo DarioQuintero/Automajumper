@@ -50,15 +50,13 @@ public class LevelCreator : MonoBehaviour
             data = data.Substring(index + 3); // +3 to get rid of the two new lines
             dataLines = data.Split("\n");
         }
-        processFinishLine(dataLines, map, checkpoints);
-    }
 
-    void processFinishLine(string[] lastLine, int[,] map, string[] checkpoints)
-    {
-        // create the game objects for the level with finish line
-        Map.instance.CreateLevel(map, lastLine[0].Split(), checkpoints);
-    }
-    
+        // Didn't work because character position couldn't be changed in start ???!!!
+        //string[] respawnPositionCoord = dataLines[0].Split();
+        //respawnPosition = new Vector3(float.Parse(respawnPositionCoord[0]), float.Parse(respawnPositionCoord[1]), 0);
+
+        Map.instance.CreateLevel(map, dataLines[0].Split(), checkpoints);
+    }    
 
     int AssignBlocks(string data, int[,] map, int type)
     {

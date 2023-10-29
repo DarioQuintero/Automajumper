@@ -8,7 +8,9 @@ public class Map : MonoBehaviour
     public static Map instance;
 
     [SerializeField] GameObject block;
+    [SerializeField] GameObject foresightBlock;
     [SerializeField] GameObject killerBlock;
+    [SerializeField] GameObject foresightKillerBlock;
     [SerializeField] GameObject line;
 
     [SerializeField] GameObject checkpoint;
@@ -20,10 +22,10 @@ public class Map : MonoBehaviour
 
     private int[,] map;
     private GameObject[,] cubes;
+    private List<GameObject> allForeSightBlocks = new List<GameObject>();
 
     [SerializeField] float curTime;
-
-    public bool paused;
+    private bool paused;
 
     void Awake()
     {
@@ -109,44 +111,101 @@ public class Map : MonoBehaviour
         {
             curTime = Config.secondsPerUpdate;
 
-            // update the map
-            int[,] newMap = new int[map.GetLength(0), map.GetLength(1)];
+            // update the map and the foresight blocks
+            destroyForesightBlocks();
+            updateMap();
+            createForesightBlocks();
+        }
+    }
 
-            for (int i = 0; i < map.GetLength(0); i++)
+    void updateMap()
+    {
+        int[,] newMap = new int[map.GetLength(0), map.GetLength(1)];
+
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.GetLength(1); j++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                newMap[i, j] = map[i, j];
+
+                // rules for alive cell
+                if (map[i, j] != 0)
                 {
-                    newMap[i, j] = map[i, j];
-
-                    // rules for alive cell
-                    if (map[i, j] != 0)
+                    int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
+                    if (numOfAliveNeighbors < 2 || numOfAliveNeighbors > 3)
                     {
-                        int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
-                        if (numOfAliveNeighbors < 2 || numOfAliveNeighbors > 3)
-                        {
-                            Destroy(cubes[i, j]);
-                            newMap[i, j] = 0;
-                        }
+                        Destroy(cubes[i, j]);
+                        newMap[i, j] = 0;
                     }
-                    // rules for dead cell
-                    else
+                }
+                // rules for dead cell
+                else
+                {
+                    if (CountAliveNeighbors(map, i, j, 1) == 3)
                     {
-                        if (CountAliveNeighbors(map, i, j, 1) == 3)
-                        {
-                            cubes[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
-                            newMap[i, j] = 1;
-                        }
+                        cubes[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                        newMap[i, j] = 1;
+                    }
 
-                        if (CountAliveNeighbors(map, i, j, 2) == 3)
-                        {
-                            cubes[i, j] = Instantiate(killerBlock, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
-                            newMap[i, j] = 2;
-                        }
+                    if (CountAliveNeighbors(map, i, j, 2) == 3)
+                    {
+                        cubes[i, j] = Instantiate(killerBlock, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                        newMap[i, j] = 2;
                     }
                 }
             }
+        }
 
-            map = newMap;
+        map = newMap;
+    }
+
+    void destroyForesightBlocks()
+    {
+        for (int i = allForeSightBlocks.Count - 1; i >= 0; i--)
+        {
+            Destroy(allForeSightBlocks[i]);
+            allForeSightBlocks.RemoveAt(i);
+        }
+    }
+
+    void createForesightBlocks()
+    {
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.GetLength(1); j++)
+            {
+                // rules for alive cell
+                if (map[i, j] != 0)
+                {
+                    int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
+                    if (numOfAliveNeighbors >= 2 && numOfAliveNeighbors <= 3)
+                    {
+                        if (map[i, j] == 1)
+                        {
+                            allForeSightBlocks.Add(Instantiate(foresightBlock,
+                            GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
+                        } else if(map[i, j] == 2){
+                            allForeSightBlocks.Add(Instantiate(foresightKillerBlock,
+                           GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
+                        }
+                    }
+                }
+                // rules for dead cell
+                else
+                {
+                    if (CountAliveNeighbors(map, i, j, 1) == 3)
+                    {
+                        allForeSightBlocks.Add(Instantiate(foresightBlock,
+                            GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
+                    }
+
+                    if (CountAliveNeighbors(map, i, j, 2) == 3)
+                    {
+                        allForeSightBlocks.Add(Instantiate(foresightKillerBlock,
+                            GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
+                    }
+                }
+            }
         }
     }
 
@@ -226,6 +285,17 @@ public class Map : MonoBehaviour
         }
 
         return ans;
+    }
+
+    public void changeUpdateSpeed(float updatesPerSecond)
+    {
+        if (updatesPerSecond == 0)
+            paused = true;
+        else
+        {
+            paused = false;
+            Config.secondsPerUpdate = 1f / updatesPerSecond;
+        }
     }
 }
 
