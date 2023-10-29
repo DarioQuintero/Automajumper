@@ -13,4 +13,4 @@ o8$91bobo$90bo$85b2o2bo4bo$85b2obo2bob2o$89b2o10$85b2o$81b2o2b2o$80b2o
 $79bo2bo$75b2o2bo$75b2o2bobo7$91bobo$90bo$85b2o2bo4bo$85b2obo2bob2o$89b
 2o4$79b2o$79b2o2b2o$84b2o$83bo2bo$86bo2b2o$84bobo2b2o!
 
-51 87
+87.5 2

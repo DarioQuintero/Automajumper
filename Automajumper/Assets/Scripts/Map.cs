@@ -44,7 +44,7 @@ public class Map : MonoBehaviour
         //Camera.main.orthographicSize = 12;
 
         // generate the cubes
-        cubesParent = new GameObject("Cube");
+        cubesParent = new GameObject("Cubes");
         for (int i = 0; i < map.GetLength(0); i++)
         {
             for (int j = 0; j < map.GetLength(1); j++)
@@ -62,7 +62,7 @@ public class Map : MonoBehaviour
 
         // create the finishe line
         Vector3 pos = new Vector3(float.Parse(finishLineCoord[0]), float.Parse(finishLineCoord[1]), 0);
-        Instantiate(checkpoint, pos, Quaternion.identity);
+        Instantiate(finishLine, pos, Quaternion.identity);
 
         // create the checkpoints
         Debug.Assert(checkpointCoords.Length % 2 == 0);

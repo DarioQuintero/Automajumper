@@ -121,8 +121,6 @@ public class Movement : MonoBehaviour
         } else {
             rb.velocity += (defaultMultiplier - 1) * Physics.gravity.y * Time.deltaTime * Vector3.up;
         }
-        /*
-        */
     }
 
     private void FixedUpdate()
@@ -154,13 +152,6 @@ public class Movement : MonoBehaviour
         }
     }
 
-    //// landed when collide with a ground 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (LayerMask.LayerToName(collision.gameObject.layer) == "Ground")
-    //        landed = true;
-    //}
-
     void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Checkpoint") && IsGrounded())
@@ -168,18 +159,19 @@ public class Movement : MonoBehaviour
             LevelCreator.instance.respawnPosition = other.transform.position;
             Destroy(other.gameObject);
         }
+
+        if (other.CompareTag("FinishLine") && IsGrounded())
+        {
+            LevelManager.instance.levelTransition();
+        }
     }
 
-    // set respawn position when touch a check point
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log(other);
-    //    Debug.Log(other.gameObject.CompareTag("Checkpoint"));
-    //    if (other.gameObject.CompareTag("Checkpoint") && IsGrounded())
-    //    {
-    //        LevelCreator.instance.respawnPosition = other.transform.position;
-    //        Destroy(other.gameObject);
-    //    }
-    //}
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Killer"))
+        {
+            transform.position = LevelCreator.instance.respawnPosition;
+        }
+    }
 }
 

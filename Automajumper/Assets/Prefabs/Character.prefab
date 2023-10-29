@@ -255,9 +255,6 @@ PrefabInstance:
       addedObject: {fileID: 6694797514540175896}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 04db8e79200466b44a95a78ea1883343, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4118697758614169395}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 04db8e79200466b44a95a78ea1883343, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2063573031169665189}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 04db8e79200466b44a95a78ea1883343, type: 3}
       insertIndex: -1
@@ -382,18 +379,6 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4118697758614169395
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5726920000934817793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ee09038926854185ae8e5ee7f137aa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &2063573031169665189
 Animator:
   serializedVersion: 5
