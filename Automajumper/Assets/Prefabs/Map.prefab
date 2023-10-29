@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block: {fileID: 8687150261473996953, guid: 0f40d745d78e2446aa34da4ead8d913b, type: 3}
+  foresightBlock: {fileID: 7337814208661392763, guid: a2004d37e6a62464e8acf6f441329945, type: 3}
   killerBlock: {fileID: 8286687537547733717, guid: 93979bdc9d86848c995cb6760859a48a, type: 3}
   line: {fileID: 3943902931969634868, guid: b5b4c4763f1814bdbb44098a0f6883aa, type: 3}
   checkpoint: {fileID: 906554994779714203, guid: 22f8cfec8dcc02931807f6e350b59fc7, type: 3}
   finishLine: {fileID: 906554994779714203, guid: 6439086099b0a46e2b31f5af377e8934, type: 3}
   curTime: 0
-  paused: 0
