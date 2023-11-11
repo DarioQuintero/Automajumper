@@ -22,7 +22,7 @@ public class LevelCreator : MonoBehaviour
         // get the size of the map
         int separatorIndex = toProcess.IndexOf('\n');
         string[] sizeList = toProcess.Substring(0, separatorIndex).Split();
-        int[] size = { int.Parse(sizeList[0]), int.Parse(sizeList[1]) };
+        int[] size = { int.Parse(sizeList[1]), int.Parse(sizeList[0]) };
 
         string data_and_checkpoint = toProcess.Substring(separatorIndex + 1);
         

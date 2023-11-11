@@ -356,10 +356,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 764791637021894332, guid: b0f70327ab8ef42bea5698411f672d27, type: 3}
-      propertyPath: foresightKillerBlock
-      value: 
-      objectReference: {fileID: 7337814208661392763, guid: 8e345d2a0e8a849fca4b8c22e0362dab, type: 3}
     - target: {fileID: 3027350336053403998, guid: b0f70327ab8ef42bea5698411f672d27, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.004283
