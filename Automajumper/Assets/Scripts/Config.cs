@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class Config : MonoBehaviour
 {
-    public static float secondsPerUpdate = 0.25f;
+    public static float secondsPerUpdateNormal = 1f;
+    public static float secondsPerUpdateFaster = 1f / 6;
 }

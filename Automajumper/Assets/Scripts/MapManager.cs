@@ -29,9 +29,23 @@ public class MapManager : MonoBehaviour
     [SerializeField] float curTime;
     private bool paused;
 
+    [SerializeField] float secondsPerUpdate;
+
     void Awake()
     {
         instance = this;
+
+        secondsPerUpdate = Config.secondsPerUpdateNormal;
+    }
+
+    public void SpeedUp()
+    {
+        secondsPerUpdate = Config.secondsPerUpdateFaster;
+    }
+
+    public void SlowDown()
+    {
+        secondsPerUpdate = Config.secondsPerUpdateNormal;
     }
 
     public void CreateLevel(int[,] normalBlockMapToCreate,
@@ -107,7 +121,7 @@ public class MapManager : MonoBehaviour
         // Instantiate(line, new Vector3(-0.5f, (lineLength - 1) / 2, 0), Quaternion.Euler(0, 0, 90), gridParent.transform);
 
         // start the time
-        curTime = Config.secondsPerUpdate;
+        curTime = secondsPerUpdate;
     }
 
     private void Update()
@@ -118,7 +132,7 @@ public class MapManager : MonoBehaviour
         // for every transition time
         if (curTime < 0)
         {
-            curTime = Config.secondsPerUpdate;
+            curTime = secondsPerUpdate;
 
             // update the map and the foresight blocks
             destroyForesightBlocks();
@@ -242,17 +256,6 @@ public class MapManager : MonoBehaviour
         }
 
         return ans;
-    }
-
-    public void changeUpdateSpeed(float updatesPerSecond)
-    {
-        if (updatesPerSecond == 0)
-            paused = true;
-        else
-        {
-            paused = false;
-            Config.secondsPerUpdate = 1f / updatesPerSecond;
-        }
     }
 }
 

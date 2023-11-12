@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class Movement : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private float fallMultiplier = 7f;
     private float defaultMultiplier = 4f;
@@ -80,7 +80,19 @@ public class Movement : MonoBehaviour
             jumpPressedDown = false;
         }
     }
-    
+
+    public void OnChangeUpdateSpeed(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            MapManager.instance.SpeedUp();
+        }
+        if (context.canceled)
+        {
+            MapManager.instance.SlowDown();
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

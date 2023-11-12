@@ -44,6 +44,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ChangeUpdateSpeed"",
+                    ""type"": ""Button"",
+                    ""id"": ""8921f38f-9a1d-4404-98da-31f9b766b10b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -123,6 +132,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3144f86-c635-4499-8092-33d033d82a03"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeUpdateSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -133,6 +153,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Run = m_Gameplay.FindAction("Run", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
+        m_Gameplay_ChangeUpdateSpeed = m_Gameplay.FindAction("ChangeUpdateSpeed", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -196,12 +217,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_Run;
     private readonly InputAction m_Gameplay_Jump;
+    private readonly InputAction m_Gameplay_ChangeUpdateSpeed;
     public struct GameplayActions
     {
         private @PlayerInput m_Wrapper;
         public GameplayActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Run => m_Wrapper.m_Gameplay_Run;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
+        public InputAction @ChangeUpdateSpeed => m_Wrapper.m_Gameplay_ChangeUpdateSpeed;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -217,6 +240,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ChangeUpdateSpeed.started += instance.OnChangeUpdateSpeed;
+            @ChangeUpdateSpeed.performed += instance.OnChangeUpdateSpeed;
+            @ChangeUpdateSpeed.canceled += instance.OnChangeUpdateSpeed;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -227,6 +253,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ChangeUpdateSpeed.started -= instance.OnChangeUpdateSpeed;
+            @ChangeUpdateSpeed.performed -= instance.OnChangeUpdateSpeed;
+            @ChangeUpdateSpeed.canceled -= instance.OnChangeUpdateSpeed;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -248,5 +277,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnRun(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnChangeUpdateSpeed(InputAction.CallbackContext context);
     }
 }
