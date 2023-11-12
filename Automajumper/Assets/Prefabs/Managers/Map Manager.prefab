@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be67c77b5edfd487c960ace1366eda03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  block: {fileID: 8687150261473996953, guid: 0f40d745d78e2446aa34da4ead8d913b, type: 3}
-  foresightBlock: {fileID: 7337814208661392763, guid: a2004d37e6a62464e8acf6f441329945, type: 3}
+  normalBlock: {fileID: 8687150261473996953, guid: 0f40d745d78e2446aa34da4ead8d913b, type: 3}
+  foresightNormalBlock: {fileID: 7337814208661392763, guid: a2004d37e6a62464e8acf6f441329945, type: 3}
   killerBlock: {fileID: 8286687537547733717, guid: 93979bdc9d86848c995cb6760859a48a, type: 3}
   foresightKillerBlock: {fileID: 7337814208661392763, guid: 8e345d2a0e8a849fca4b8c22e0362dab, type: 3}
   line: {fileID: 3943902931969634868, guid: b5b4c4763f1814bdbb44098a0f6883aa, type: 3}

@@ -56,10 +56,11 @@ public class LevelCreator : MonoBehaviour
         toProcess = toProcess.Substring(newline2 + 2);
 
         // initialize for the loop
-        int[,] map = new int[size[0], size[1]];
+        int[,] blockMap = new int[size[0], size[1]];
+        int[,] killerBlockMap = new int[0, 0];
 
         // assign normal blocks
-        int index = AssignBlocks(toProcess, map, 1);
+        int index = AssignBlocks(toProcess, blockMap);
 
         // get the rest of the data by skipping an empty line
         toProcess = toProcess.Substring(index + 2);
@@ -68,8 +69,10 @@ public class LevelCreator : MonoBehaviour
         // if there is only one line left, then there is no red block
         if (dataLines.Length != 1)
         {
+            killerBlockMap = new int[size[0], size[1]];
+
             // assign red blocks
-            index = AssignBlocks(toProcess, map, 2);
+            index = AssignBlocks(toProcess, killerBlockMap);
             // get the rest of the data by skipping an empty line
             toProcess = toProcess.Substring(index + 2);
         }
@@ -81,7 +84,7 @@ public class LevelCreator : MonoBehaviour
         CreateSceneObjects();
 
         // create the blocks, checkpoints, and finishline in the level
-        MapManager.instance.CreateLevel(map, checkpoints, finishLineCoord);
+        MapManager.instance.CreateLevel(blockMap, killerBlockMap, checkpoints, finishLineCoord);
     }
 
     void CreateSceneObjects()
@@ -95,7 +98,7 @@ public class LevelCreator : MonoBehaviour
         curCamera.Follow = curCharacter.transform;
     }
 
-    int AssignBlocks(string data, int[,] map, int type)
+    int AssignBlocks(string data, int[,] map)
     {
         int index = 0;
         int[] curIndices = { 0, 0 };
@@ -128,7 +131,7 @@ public class LevelCreator : MonoBehaviour
                 {
                     while (count-- > 0)
                     {
-                        map[curIndices[0], curIndices[1]] = type;
+                        map[curIndices[0], curIndices[1]] = 1;
                         curIndices[1]++;
                     }
                 }

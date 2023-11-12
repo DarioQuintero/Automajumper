@@ -7,8 +7,8 @@ public class MapManager : MonoBehaviour
 {
     public static MapManager instance;
 
-    [SerializeField] GameObject block;
-    [SerializeField] GameObject foresightBlock;
+    [SerializeField] GameObject normalBlock;
+    [SerializeField] GameObject foresightNormalBlock;
     [SerializeField] GameObject killerBlock;
     [SerializeField] GameObject foresightKillerBlock;
     [SerializeField] GameObject line;
@@ -16,12 +16,14 @@ public class MapManager : MonoBehaviour
     [SerializeField] GameObject checkpoint;
     [SerializeField] GameObject finishLine;
 
-    private GameObject cubesParent;
+    private GameObject blocksParent;
 
     private GameObject checkpointParent;
 
-    private int[,] map;
-    private GameObject[,] cubes;
+    private int[,] normalBlockMap;
+    private int[,] killerBlockMap;
+    private GameObject[,] normalBlocks;
+    private GameObject[,] killerBlocks;
     private List<GameObject> allForeSightBlocks = new List<GameObject>();
 
     [SerializeField] float curTime;
@@ -32,26 +34,39 @@ public class MapManager : MonoBehaviour
         instance = this;
     }
 
-    public void CreateLevel(int[,] mapToCreate, string[] checkpointCoords, string[] finishLineCoord)
+    public void CreateLevel(int[,] normalBlockMapToCreate,
+                            int[,] killerBlockMapToCreate,
+                            string[] checkpointCoords,
+                            string[] finishLineCoord)
     {
-        map = mapToCreate;
+        normalBlockMap = normalBlockMapToCreate;
+        killerBlockMap = killerBlockMapToCreate;
 
-        // initialize cube array
-        cubes = new GameObject[map.GetLength(0), map.GetLength(1)];
+        // initialize blocks array and blocks parent
+        normalBlocks = new GameObject[normalBlockMap.GetLength(0), normalBlockMap.GetLength(1)];
+        killerBlocks = new GameObject[killerBlockMap.GetLength(0), killerBlockMap.GetLength(1)];
+        blocksParent = new GameObject("Blocks");
 
-        // generate the cubes
-        cubesParent = new GameObject("Cubes");
-        for (int i = 0; i < map.GetLength(0); i++)
+        // generate the normal blocks
+        for (int i = 0; i < normalBlockMap.GetLength(0); i++)
         {
-            for (int j = 0; j < map.GetLength(1); j++)
+            for (int j = 0; j < normalBlockMap.GetLength(1); j++)
             {
-                if (map[i, j] == 1)
+                if (normalBlockMap[i, j] == 1)
                 {
-                    cubes[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                    normalBlocks[i, j] = Instantiate(normalBlock, GetWorldPosFromArrayIndices(i, j, normalBlockMap), Quaternion.identity, blocksParent.transform);
                 }
-                else if (map[i, j] == 2)
+            }
+        }
+
+        // generate the killer blocks
+        for (int i = 0; i < killerBlockMap.GetLength(0); i++)
+        {
+            for (int j = 0; j < killerBlockMap.GetLength(1); j++)
+            {
+                if (killerBlockMap[i, j] == 1)
                 {
-                    cubes[i, j] = Instantiate(killerBlock, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                    killerBlocks[i, j] = Instantiate(killerBlock, GetWorldPosFromArrayIndices(i, j, killerBlockMap), Quaternion.identity, blocksParent.transform);
                 }
             }
         }
@@ -107,12 +122,14 @@ public class MapManager : MonoBehaviour
 
             // update the map and the foresight blocks
             destroyForesightBlocks();
-            updateMap();
-            createForesightBlocks();
+            normalBlockMap = updateMap(normalBlockMap, normalBlock, normalBlocks);
+            killerBlockMap = updateMap(killerBlockMap, killerBlock, killerBlocks);
+            createForesightBlocks(normalBlockMap, foresightNormalBlock);
+            createForesightBlocks(killerBlockMap, foresightKillerBlock);
         }
     }
 
-    void updateMap()
+    int[,] updateMap(int[,] map, GameObject block, GameObject[,] blocks)
     {
         int[,] newMap = new int[map.GetLength(0), map.GetLength(1)];
 
@@ -128,29 +145,23 @@ public class MapManager : MonoBehaviour
                     int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
                     if (numOfAliveNeighbors < 2 || numOfAliveNeighbors > 3)
                     {
-                        Destroy(cubes[i, j]);
+                        Destroy(blocks[i, j]);
                         newMap[i, j] = 0;
                     }
                 }
                 // rules for dead cell
                 else
                 {
-                    if (CountAliveNeighbors(map, i, j, 1) == 3)
+                    if (CountAliveNeighbors(map, i, j) == 3)
                     {
-                        cubes[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
+                        blocks[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j, map), Quaternion.identity, blocksParent.transform);
                         newMap[i, j] = 1;
-                    }
-
-                    if (CountAliveNeighbors(map, i, j, 2) == 3)
-                    {
-                        cubes[i, j] = Instantiate(killerBlock, GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform);
-                        newMap[i, j] = 2;
                     }
                 }
             }
         }
 
-        map = newMap;
+        return newMap;
     }
 
     void destroyForesightBlocks()
@@ -162,7 +173,7 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    void createForesightBlocks()
+    void createForesightBlocks(int[,] map, GameObject foresightBlock)
     {
         for (int i = 0; i < map.GetLength(0); i++)
         {
@@ -174,36 +185,24 @@ public class MapManager : MonoBehaviour
                     int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
                     if (numOfAliveNeighbors >= 2 && numOfAliveNeighbors <= 3)
                     {
-                        if (map[i, j] == 1)
-                        {
-                            allForeSightBlocks.Add(Instantiate(foresightBlock,
-                            GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
-                        } else if(map[i, j] == 2){
-                            allForeSightBlocks.Add(Instantiate(foresightKillerBlock,
-                           GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
-                        }
+                        allForeSightBlocks.Add(Instantiate(foresightBlock,
+                        GetWorldPosFromArrayIndices(i, j, map), Quaternion.identity, blocksParent.transform));
                     }
                 }
                 // rules for dead cell
                 else
                 {
-                    if (CountAliveNeighbors(map, i, j, 1) == 3)
+                    if (CountAliveNeighbors(map, i, j) == 3)
                     {
                         allForeSightBlocks.Add(Instantiate(foresightBlock,
-                            GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
-                    }
-
-                    if (CountAliveNeighbors(map, i, j, 2) == 3)
-                    {
-                        allForeSightBlocks.Add(Instantiate(foresightKillerBlock,
-                            GetWorldPosFromArrayIndices(i, j), Quaternion.identity, cubesParent.transform));
+                            GetWorldPosFromArrayIndices(i, j, map), Quaternion.identity, blocksParent.transform));
                     }
                 }
             }
         }
     }
 
-    Vector3 GetWorldPosFromArrayIndices(int i, int j)
+    Vector3 GetWorldPosFromArrayIndices(int i, int j, int[,] map)
     {
         // transpose the map and reflect it across the middle line
         return new Vector3(j, map.GetLength(0) - i - 1, 0);
@@ -239,42 +238,6 @@ public class MapManager : MonoBehaviour
             if (j - 1 >= 0 && map[i + 1, j - 1] != 0)
                 ans++;
             if (j + 1 < map.GetLength(1) && map[i + 1, j + 1] != 0)
-                ans++;
-        }
-
-        return ans;
-    }
-
-    // count the alive neighbors of this cell in coordinate i, j in the map
-    int CountAliveNeighbors(int[,] map, int i, int j, int type)
-    {
-        int ans = 0;
-
-        // left and right neighbors
-        if (j - 1 >= 0 && map[i, j - 1] == type)
-            ans++;
-        if (j + 1 < map.GetLength(1) && map[i, j + 1] == type)
-            ans++;
-
-        // top three neighbors
-        if (i - 1 >= 0)
-        {
-            if (map[i - 1, j] == type)
-                ans++;
-            if (j - 1 >= 0 && map[i - 1, j - 1] == type)
-                ans++;
-            if (j + 1 < map.GetLength(1) && map[i - 1, j + 1] == type)
-                ans++;
-        }
-
-        // top three neighbors
-        if (i + 1 < map.GetLength(0))
-        {
-            if (map[i + 1, j] == type)
-                ans++;
-            if (j - 1 >= 0 && map[i + 1, j - 1] == type)
-                ans++;
-            if (j + 1 < map.GetLength(1) && map[i + 1, j + 1] == type)
                 ans++;
         }
 
