@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5012518439824611137
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3027350336053403998}
+  - component: {fileID: 764791637021894332}
+  m_Layer: 0
+  m_Name: Map Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3027350336053403998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012518439824611137}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.004283, y: 3.7966113, z: -0.2527008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &764791637021894332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012518439824611137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be67c77b5edfd487c960ace1366eda03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  block: {fileID: 8687150261473996953, guid: 0f40d745d78e2446aa34da4ead8d913b, type: 3}
+  foresightBlock: {fileID: 7337814208661392763, guid: a2004d37e6a62464e8acf6f441329945, type: 3}
+  killerBlock: {fileID: 8286687537547733717, guid: 93979bdc9d86848c995cb6760859a48a, type: 3}
+  foresightKillerBlock: {fileID: 7337814208661392763, guid: 8e345d2a0e8a849fca4b8c22e0362dab, type: 3}
+  line: {fileID: 3943902931969634868, guid: b5b4c4763f1814bdbb44098a0f6883aa, type: 3}
+  checkpoint: {fileID: 906554994779714203, guid: 22f8cfec8dcc02931807f6e350b59fc7, type: 3}
+  finishLine: {fileID: 906554994779714203, guid: 6439086099b0a46e2b31f5af377e8934, type: 3}
+  curTime: 0

@@ -10,10 +10,13 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
 
     [SerializeField] List<CinemachineVirtualCamera> vcamList;
-    private int cameraIndex = 0;
+    private int cameraIndex = -1;
     [SerializeField] int levelNum;
 
     [SerializeField] RawImage levelTransitionImage;
+
+    [SerializeField] GameObject levelCreator;
+    [SerializeField] GameObject mapManager;
 
     private void Awake()
     {
@@ -22,6 +25,10 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        // instantiate 
+        Instantiate(levelCreator);
+        Instantiate(mapManager);
+
         // need to be in start to make sure Level Creator instance is assigned
         LevelCreator.instance.ParseLevel(levelNum);
         StartCoroutine(nameof(fadeIn));
@@ -34,8 +41,10 @@ public class LevelManager : MonoBehaviour
 
     public void nextCamaera()
     {
-        vcamList[cameraIndex].gameObject.SetActive(false);
+        if (cameraIndex != -1)
+            vcamList[cameraIndex].gameObject.SetActive(false);
         cameraIndex += 1;
+        vcamList[cameraIndex].gameObject.SetActive(true);
     }
 
     public void levelTransition()
