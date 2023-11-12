@@ -25,8 +25,6 @@ public class LevelCreator : MonoBehaviour
         // fix Window's problem
         toProcess = toProcess.Replace("\r\n", "\n");
 
-        // Didn't work because character position couldn't be changed in start ???!!!
-
         // get the spawn position
         int separatorIndex = toProcess.IndexOf('\n');
         string[] respawnPositionCoord = toProcess.Substring(0, separatorIndex).Split();
@@ -35,11 +33,7 @@ public class LevelCreator : MonoBehaviour
         // so use 2 and 3 for indices
         respawnPosition = new Vector3(float.Parse(respawnPositionCoord[2]), float.Parse(respawnPositionCoord[3]), 0);
 
-        // instantiate the character at respawn position
-        GameObject curCharacter= Instantiate(character, respawnPosition, character.transform.rotation);
-        vCamera.Follow = curCharacter.transform;
-
-        // skip a line in between
+        // skip an empty line in between
         toProcess = toProcess.Substring(separatorIndex + 2);
 
         // get the size of the map
@@ -50,7 +44,7 @@ public class LevelCreator : MonoBehaviour
         // Use indices of 3 and 2 to change to row column coordinates
         int[] size = { int.Parse(sizeList[3]), int.Parse(sizeList[2]) };
 
-        // skip a line in between
+        // go to next line
         toProcess = toProcess.Substring(separatorIndex + 1);
 
         // get checkpoints coordinates from next line 
@@ -58,8 +52,8 @@ public class LevelCreator : MonoBehaviour
         string[] checkpoints = toProcess.Substring("Checkpoints: ".Length,
                                         newline2 - "Checkpoints: ".Length).Split(); // ignore the prefix "Checkpoints: "
 
-        // get block data after skipping a line
-        toProcess = toProcess.Substring(newline2 + 1);
+        // get block data after skipping an empty line
+        toProcess = toProcess.Substring(newline2 + 2);
 
         // initialize for the loop
         int[,] map = new int[size[0], size[1]];
@@ -67,8 +61,8 @@ public class LevelCreator : MonoBehaviour
         // assign normal blocks
         int index = AssignBlocks(toProcess, map, 1);
 
-        // get the rest of the data
-        toProcess = toProcess.Substring(index + 3); // +3 to get rid of the two new lines
+        // get the rest of the data by skipping an empty line
+        toProcess = toProcess.Substring(index + 2);
         string[] dataLines = toProcess.Split("\n");
 
         // if there is only one line left, then there is no red block
@@ -76,14 +70,29 @@ public class LevelCreator : MonoBehaviour
         {
             // assign red blocks
             index = AssignBlocks(toProcess, map, 2);
-            toProcess = toProcess.Substring(index + 3); // +3 to get rid of the two new lines
+            // get the rest of the data by skipping an empty line
+            toProcess = toProcess.Substring(index + 2);
         }
 
-        // finish line coordinates
+        // finishline coordinates
         string[] finishLineCoord = toProcess.Substring("Finishline: ".Length).Split();
 
+        // create scene objects
+        CreateSceneObjects();
+
         // create the blocks, checkpoints, and finishline in the level
-        Map.instance.CreateLevel(map, checkpoints, finishLineCoord);
+        MapManager.instance.CreateLevel(map, checkpoints, finishLineCoord);
+    }
+
+    void CreateSceneObjects()
+    {
+        // instantiate the character at respawn position
+        GameObject curCharacter = Instantiate(character, respawnPosition, character.transform.rotation);
+
+        // create camera and set it to follow player
+        CinemachineVirtualCamera curCamera = Instantiate(vCamera);
+
+        curCamera.Follow = curCharacter.transform;
     }
 
     int AssignBlocks(string data, int[,] map, int type)
@@ -135,6 +144,7 @@ public class LevelCreator : MonoBehaviour
             index++;
         }
 
-        return index;
+        // +1 so it syncs with indexing with "\n"
+        return index + 1;
     }
 }

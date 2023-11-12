@@ -1,5 +1,8 @@
-﻿95 53
-CP 28 9 45.5 22 54 34 85.5 49 87.5 37 85 24
+﻿Spawn Position: 0 11.5
+
+Map Size: 95 53
+Checkpoints: 28 9 45.5 22 54 34 85.5 49 87.5 37 85 24
+
 o78b2o$79b2o2$79b4o$78bo4bob2o$78bo3b2ob2o$70bo4b2obob2obo$70bo4b2obo
 4bo$70bo8b4o2$69bo11b2o$67bo3b4o6b2o$67bo3bo$67bo$70bo$63bo4b2o$63bo23b
 2o$63bo22bobo$86b2o$54bo4b3o3b3o$53bobo$54bo8bo$63bo$63bo$52bobo$50bo
@@ -8,9 +11,8 @@ o8b2obo4bo$28bo3b4o3b2ob2o3bo$28bo3bo9bob2obob2o$10bo17bo13bo4bob2o$10b
 o20bo11b4o$10bo18b2o$18bo24b2o$2o4b3o3b3o3bo24b2o$2o16bo$10bo12bo3b2o
 $10bo12bo3bobo$10bo12bo4b2o5$87b2o$87b2o!
 
-95 48
 o8$91bobo$90bo$85b2o2bo4bo$85b2obo2bob2o$89b2o10$85b2o$81b2o2b2o$80b2o
 $79bo2bo$75b2o2bo$75b2o2bobo7$91bobo$90bo$85b2o2bo4bo$85b2obo2bob2o$89b
 2o4$79b2o$79b2o2b2o$84b2o$83bo2bo$86bo2b2o$84bobo2b2o!
 
-87.5 2
+Finishline: 87.5 2

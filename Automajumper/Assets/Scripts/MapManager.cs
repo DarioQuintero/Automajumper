@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
-public class Map : MonoBehaviour
+public class MapManager : MonoBehaviour
 {
-    public static Map instance;
+    public static MapManager instance;
 
     [SerializeField] GameObject block;
     [SerializeField] GameObject foresightBlock;
