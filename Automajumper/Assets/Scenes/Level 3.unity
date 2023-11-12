@@ -398,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5012518439824611137, guid: b0f70327ab8ef42bea5698411f672d27, type: 3}
       propertyPath: m_Name
-      value: Map
+      value: Map Manager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
