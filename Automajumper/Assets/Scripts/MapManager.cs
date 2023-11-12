@@ -32,18 +32,12 @@ public class Map : MonoBehaviour
         instance = this;
     }
 
-    public void CreateLevel(int[,] mapToCreate, string[] finishLineCoord, string[] checkpointCoords)
+    public void CreateLevel(int[,] mapToCreate, string[] checkpointCoords, string[] finishLineCoord)
     {
         map = mapToCreate;
 
         // initialize cube array
         cubes = new GameObject[map.GetLength(0), map.GetLength(1)];
-
-        // camera position and size
-        ////Camera.main.transform.position = new Vector3(map.GetLength(1) / 2, map.GetLength(0) / 2, -10);
-        //Camera.main.transform.position = new Vector3(17, 14, -10);
-        ////Camera.main.orthographicSize = Mathf.Max(map.GetLength(1) / 2, map.GetLength(0) / 2);
-        //Camera.main.orthographicSize = 12;
 
         // generate the cubes
         cubesParent = new GameObject("Cubes");

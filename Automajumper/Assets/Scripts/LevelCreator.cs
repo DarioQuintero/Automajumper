@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class LevelCreator : MonoBehaviour
@@ -8,55 +9,82 @@ public class LevelCreator : MonoBehaviour
 
     public Vector3 respawnPosition;
 
+    [SerializeField] GameObject character;
+
+    [SerializeField] CinemachineVirtualCamera vCamera;
+
     public void Awake()
     {
         instance = this;
     }
 
-    public void createLevel(int levelNum)
+    public void ParseLevel(int levelNum)
     {
         // get string to process 
         string toProcess = Resources.Load<TextAsset>("Level" + levelNum).ToString();
+        // fix Window's problem
         toProcess = toProcess.Replace("\r\n", "\n");
 
-        // get the size of the map
+        // Didn't work because character position couldn't be changed in start ???!!!
+
+        // get the spawn position
         int separatorIndex = toProcess.IndexOf('\n');
+        string[] respawnPositionCoord = toProcess.Substring(0, separatorIndex).Split();
+
+        // Format: Spawn Position: x y
+        // so use 2 and 3 for indices
+        respawnPosition = new Vector3(float.Parse(respawnPositionCoord[2]), float.Parse(respawnPositionCoord[3]), 0);
+
+        // instantiate the character at respawn position
+        GameObject curCharacter= Instantiate(character, respawnPosition, character.transform.rotation);
+        vCamera.Follow = curCharacter.transform;
+
+        // skip a line in between
+        toProcess = toProcess.Substring(separatorIndex + 2);
+
+        // get the size of the map
+        separatorIndex = toProcess.IndexOf('\n');
         string[] sizeList = toProcess.Substring(0, separatorIndex).Split();
-        int[] size = { int.Parse(sizeList[1]), int.Parse(sizeList[0]) };
 
-        string data_and_checkpoint = toProcess.Substring(separatorIndex + 1);
-        
-        int newline2 = data_and_checkpoint.IndexOf('\n');
-        string[] checkpoints = data_and_checkpoint.Substring(3, newline2 - 3).Split(); // ignore the letters "CP"
+        // Format: Map Size: x y
+        // Use indices of 3 and 2 to change to row column coordinates
+        int[] size = { int.Parse(sizeList[3]), int.Parse(sizeList[2]) };
 
-        // block data is everything after the size data
-        string data = data_and_checkpoint.Substring(newline2 + 1);
+        // skip a line in between
+        toProcess = toProcess.Substring(separatorIndex + 1);
+
+        // get checkpoints coordinates from next line 
+        int newline2 = toProcess.IndexOf('\n');
+        string[] checkpoints = toProcess.Substring("Checkpoints: ".Length,
+                                        newline2 - "Checkpoints: ".Length).Split(); // ignore the prefix "Checkpoints: "
+
+        // get block data after skipping a line
+        toProcess = toProcess.Substring(newline2 + 1);
 
         // initialize for the loop
         int[,] map = new int[size[0], size[1]];
 
         // assign normal blocks
-        int index = AssignBlocks(data, map, 1);
+        int index = AssignBlocks(toProcess, map, 1);
 
         // get the rest of the data
-        data = data.Substring(index + 3); // +3 to get rid of the two new lines
-        string[] dataLines = data.Split("\n");
+        toProcess = toProcess.Substring(index + 3); // +3 to get rid of the two new lines
+        string[] dataLines = toProcess.Split("\n");
 
         // if there is only one line left, then there is no red block
         if (dataLines.Length != 1)
         {
             // assign red blocks
-            index = AssignBlocks(data, map, 2);
-            data = data.Substring(index + 3); // +3 to get rid of the two new lines
-            dataLines = data.Split("\n");
+            index = AssignBlocks(toProcess, map, 2);
+            toProcess = toProcess.Substring(index + 3); // +3 to get rid of the two new lines
         }
 
-        // Didn't work because character position couldn't be changed in start ???!!!
-        //string[] respawnPositionCoord = dataLines[0].Split();
-        //respawnPosition = new Vector3(float.Parse(respawnPositionCoord[0]), float.Parse(respawnPositionCoord[1]), 0);
+        // finish line coordinates
+        string[] finishLineCoord = toProcess.Substring("Finishline: ".Length).Split();
 
-        Map.instance.CreateLevel(map, dataLines[0].Split(), checkpoints);
-    }    
+        // create the blocks, checkpoints, and finishline in the level
+        Map.instance.CreateLevel(map, checkpoints, finishLineCoord);
+    }
 
     int AssignBlocks(string data, int[,] map, int type)
     {
