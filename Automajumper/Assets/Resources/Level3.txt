@@ -1,24 +1,25 @@
-﻿Spawn Position: 61 21
+﻿Spawn Position: 115 52
 
 Map Size: 213 85 
 Checkpoints: 36 30 61 21 78 24 88 40 115 52 139 68 155 52
 
 o17$133b2o4bo$124bo7bobo4bo$122b3o8bo5bo$121bo$121b2o$128bo$128bobo$129b
-3o3b2o$113b2o20b2o$113b2o3b3o$119bobo$121bo$127b2o16b2o$128bo17bo$116b
-o8b3o13b3o2b2o$115bobo7bo13b3obo3bo6b2o$115b2o22bo4bob2o7bo$105b2obob
-2o31bobo9bobo$108bo32b2obo4bo6b2o$45b2o58bo5bo29bo3bob3o$30b2o13bo60b
-5o30b2o2b3o$30b2o11bobo96bo$37b2o4b2o52bo44b2o$36b2obo55bobo7b3ob3o$37b
-ob2o55bobo$38b2o50b2o4bo5bo$17b3o4bob2o62bo11bo$21b3obo7b3o52bobo11bo
-$22b2o8bo3bo51b2o$20b2ob2o7bo3bo$21bobobo6bob2o7b2o$20b2ob2o18bobo$20b
-o6b2o9bo6bo$27b2o10bo5b2o$37b3o3$35b2o$35b2o$31bo$29bobo$30bobo$30bo$
-78b2o$78b2o$62bo$25b3o32b3o$25bobo31bo$25b3o31b2o$19bo5b3o$18bobo4b3o
-$17bobo5b3o171b2o$16bobo6bobo169bo3bo$17bo7b3o160bo7bo5bo$188bobo4b2o
-bo3bo8b2o$49b2o140b2o3bo5bo8b2o$48bobo5b2o119b2o12b2o4bo3bo$48bo7b2o119b
-2o12b2o6b2o$5b2o6b8o26b2o139bobo$5b2o6bob4obo167bo$13b8o40bo$57b2obob
-o$56bobobobo$53bo2bobobobob2o$53b4ob2o2bo2bo$57bo4b2o$55bobo$55b2o!
+3o3b2o$104b2obob2o2b2o20b2o$107bo5b2o3b3o$104bo5bo8bobo$105b5o11bo$127b
+2o16b2o$128bo17bo$104b3ob3o5bo8b3o13b3o2b2o$115bobo7bo13b3obo3bo6b2o$
+101bo13b2o22bo4bob2o7bo$101bo41bobo9bobo$101bo39b2obo4bo6b2o$45b2o50b
+o43bo3bob3o$30b2o13bo49bobo43b2o2b3o$30b2o11bobo50bobo43bo$37b2o4b2o51b
+o45b2o$36b2obo$37bob2o$38b2o50b2o$17b3o4bob2o62bo$21b3obo7b3o52bobo$22b
+2o8bo3bo51b2o$20b2ob2o7bo3bo$21bobobo6bob2o7b2o$20b2ob2o18bobo$20bo6b
+2o9bo6bo$27b2o10bo5b2o$37b3o3$35b2o$35b2o$31bo$29bobo$30bobo$30bo$78b
+2o$78b2o$62bo$25b3o32b3o$25bobo31bo$25b3o31b2o$19bo5b3o$18bobo4b3o$17b
+obo5b3o171b2o$16bobo6bobo169bo3bo$17bo7b3o160bo7bo5bo$188bobo4b2obo3b
+o8b2o$49b2o140b2o3bo5bo8b2o$48bobo5b2o119b2o12b2o4bo3bo$48bo7b2o119b2o
+12b2o6b2o$5b2o6b8o26b2o139bobo$5b2o6bob4obo167bo$13b8o40bo$57b2obobo$
+56bobobobo$53bo2bobobobob2o$53b4ob2o2bo2bo$57bo4b2o$55bobo$55b2o!
 
 o4$111bo$111bobo$100b2o12b2o6b2o$100b2o12b2o4bo3bo$114b2o3bo5bo8b2o$111b
-obo4b2obo3bo8b2o$111bo7bo5bo$120bo3bo$122b2o9$145bobo$144bo$139b2o2bo
-4bo$139b2obo2bob2o$143b2o23$76b2o$75bobo$75bo$74b2o9$69b2o$69b2o!
+obo4b2obo3bo8b2o$111bo7bo5bo$120bo3bo$122b2o$136bo$135bobo$128b2o6b2o
+$127bobo$128bo3$116b2o$116b2o27bobo$144bo$139b2o2bo4bo$139b2obo2bob2o
+$143b2o24$75b2o$74bobo$74bo$73b2o8$69b2o$69b2o!
 
 Finishline: 211.5 14
