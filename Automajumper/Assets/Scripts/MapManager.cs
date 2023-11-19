@@ -40,6 +40,7 @@ public class MapManager : MonoBehaviour
 
     public void SpeedUp()
     {
+        curTime = 0f;
         secondsPerUpdate = Config.secondsPerUpdateFaster;
     }
 
