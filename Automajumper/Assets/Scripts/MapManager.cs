@@ -40,8 +40,10 @@ public class MapManager : MonoBehaviour
 
     public void SpeedUp()
     {
-        curTime = 0f;
         secondsPerUpdate = Config.secondsPerUpdateFaster;
+
+        // reset the cur time
+        curTime = Mathf.Min(curTime, secondsPerUpdate);
     }
 
     public void SlowDown()
@@ -131,7 +133,7 @@ public class MapManager : MonoBehaviour
             curTime -= Time.deltaTime;
 
         // for every transition time
-        if (curTime < 0)
+        if (curTime <= 0)
         {
             curTime = secondsPerUpdate;
 

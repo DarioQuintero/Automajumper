@@ -21,6 +21,8 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        //Application.targetFrameRate = -1;
     }
 
     private void Start()
