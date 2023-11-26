@@ -10,7 +10,7 @@ public class VirtualCameraManager : MonoBehaviour
     {
         if (other.gameObject.CompareTag("CameraChange"))
         {
-            LevelManager.instance.nextCamaera();
+            LevelManager.instance.nextCamera();
             Destroy(other.gameObject);
         }
     }

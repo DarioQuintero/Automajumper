@@ -1,7 +1,7 @@
 Spawn Position: 5 15
 
 Map Size: 213 85 
-Checkpoints: 36 30 61 21 78 24 88 40 115 52 139 68 155 52
+Checkpoints: 36 30 61 21 78 24 88 40 115 52 137 67 155 52
 
 o17$133b2o4bo$124bo7bobo4bo$122b3o8bo5bo$121bo$121b2o$128bo$128bobo$129b
 3o3b2o$104b2obob2o2b2o20b2o$107bo5b2o3b3o$104bo5bo8bobo$105b5o11bo$127b

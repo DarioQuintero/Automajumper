@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene("Level " + (levelNum + 1));
     }
 
-    public void nextCamaera()
+    public void nextCamera()
     {
         if (cameraIndex != -1)
             vcamList[cameraIndex].gameObject.SetActive(false);
