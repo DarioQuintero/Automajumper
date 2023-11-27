@@ -94,8 +94,8 @@ public class LevelCreator : MonoBehaviour
 
         // create camera and set it to follow player
         //CinemachineVirtualCamera curCamera = Instantiate(vCamera);
-
-        for (int i = 0; i < 3; i++) {
+        List<CinemachineVirtualCamera> vcamList = LevelManager.instance.vcamList;
+        for (int i = 0; i < vcamList.Count; i++) {
             LevelManager.instance.vcamList[i].Follow = curCharacter.transform;
         }
     }
