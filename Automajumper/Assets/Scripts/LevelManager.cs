@@ -9,8 +9,8 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
 
-    [SerializeField] List<CinemachineVirtualCamera> vcamList;
-    private int cameraIndex = -1;
+    public List<CinemachineVirtualCamera> vcamList;
+    private int cameraIndex = 0;
     [SerializeField] int levelNum;
 
     [SerializeField] RawImage levelTransitionImage;
@@ -21,6 +21,8 @@ public class LevelManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        //Application.targetFrameRate = -1;
     }
 
     private void Start()
@@ -39,10 +41,9 @@ public class LevelManager : MonoBehaviour
         SceneManager.LoadScene("Level " + (levelNum + 1));
     }
 
-    public void nextCamaera()
+    public void nextCamera()
     {
-        if (cameraIndex != -1)
-            vcamList[cameraIndex].gameObject.SetActive(false);
+        vcamList[cameraIndex].gameObject.SetActive(false);
         cameraIndex += 1;
         vcamList[cameraIndex].gameObject.SetActive(true);
     }

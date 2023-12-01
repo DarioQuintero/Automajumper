@@ -11,7 +11,7 @@ public class LevelCreator : MonoBehaviour
 
     [SerializeField] GameObject character;
 
-    [SerializeField] CinemachineVirtualCamera vCamera;
+    //[SerializeField] CinemachineVirtualCamera vCamera;
 
     public void Awake()
     {
@@ -93,9 +93,11 @@ public class LevelCreator : MonoBehaviour
         GameObject curCharacter = Instantiate(character, respawnPosition, character.transform.rotation);
 
         // create camera and set it to follow player
-        CinemachineVirtualCamera curCamera = Instantiate(vCamera);
-
-        curCamera.Follow = curCharacter.transform;
+        //CinemachineVirtualCamera curCamera = Instantiate(vCamera);
+        List<CinemachineVirtualCamera> vcamList = LevelManager.instance.vcamList;
+        for (int i = 0; i < vcamList.Count; i++) {
+            LevelManager.instance.vcamList[i].Follow = curCharacter.transform;
+        }
     }
 
     int AssignBlocks(string data, int[,] map)

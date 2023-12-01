@@ -175,6 +175,7 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("FinishLine") && IsGrounded())
         {
+            Destroy(other.gameObject);
             LevelManager.instance.levelTransition();
         }
     }
