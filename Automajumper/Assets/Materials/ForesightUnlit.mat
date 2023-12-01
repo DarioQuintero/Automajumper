@@ -40,5 +40,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
+    - _Emission: 1
+    - _Opacity: 1
     m_Colors: []
   m_BuildTextureStacks: []
