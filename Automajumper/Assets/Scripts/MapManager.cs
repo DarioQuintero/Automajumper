@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class MapManager : MonoBehaviour
@@ -9,8 +12,11 @@ public class MapManager : MonoBehaviour
 
     [SerializeField] GameObject normalBlock;
     [SerializeField] GameObject foresightNormalBlock;
+    [SerializeField] GameObject disappearNormalBlock;
     [SerializeField] GameObject killerBlock;
     [SerializeField] GameObject foresightKillerBlock;
+    [SerializeField] GameObject disappearKillerBlock;
+
     [SerializeField] GameObject line;
 
     [SerializeField] GameObject checkpoint;
@@ -22,25 +28,38 @@ public class MapManager : MonoBehaviour
 
     private int[,] normalBlockMap;
     private int[,] killerBlockMap;
+    private int[,] nextNormalBlockMap;
+    private int[,] nextKillerBlockMap;
     private GameObject[,] normalBlocks;
     private GameObject[,] killerBlocks;
-    private List<GameObject> allForeSightBlocks = new List<GameObject>();
+
+    private List<int[]> disappearNormalBlocks = new List<int[]>();
+    private List<int[]> foresightNormalBlocks = new List<int[]>();
+    private List<int[]> disappearKillerBlocks = new List<int[]>();
+    private List<int[]> foresightKillerBlocks = new List<int[]>();
+    private List<GameObject> blocksToDestroy = new List<GameObject>();
 
     [SerializeField] float curTime;
     private bool paused;
 
     [SerializeField] float secondsPerUpdate;
 
+    [SerializeField] AudioSource music;
+
     void Awake()
     {
         instance = this;
 
         secondsPerUpdate = Config.secondsPerUpdateNormal;
+
+        music = GameObject.Find("Music").GetComponent<AudioSource>();
     }
 
     public void SpeedUp()
     {
         secondsPerUpdate = Config.secondsPerUpdateFaster;
+
+        music.pitch = 3;
 
         // reset the cur time
         curTime = Mathf.Min(curTime, secondsPerUpdate);
@@ -49,6 +68,8 @@ public class MapManager : MonoBehaviour
     public void SlowDown()
     {
         secondsPerUpdate = Config.secondsPerUpdateNormal;
+
+        music.pitch = 1;
     }
 
     public void CreateLevel(int[,] normalBlockMapToCreate,
@@ -125,6 +146,10 @@ public class MapManager : MonoBehaviour
 
         // start the time
         curTime = secondsPerUpdate;
+
+        nextNormalBlockMap = UpdateMap(normalBlockMap, disappearNormalBlocks, foresightNormalBlocks);
+        nextKillerBlockMap = UpdateMap(killerBlockMap, disappearKillerBlocks, foresightKillerBlocks);
+        UpdateMapObjects();
     }
 
     private void Update()
@@ -137,16 +162,36 @@ public class MapManager : MonoBehaviour
         {
             curTime = secondsPerUpdate;
 
-            // update the map and the foresight blocks
-            destroyForesightBlocks();
-            normalBlockMap = updateMap(normalBlockMap, normalBlock, normalBlocks);
-            killerBlockMap = updateMap(killerBlockMap, killerBlock, killerBlocks);
-            createForesightBlocks(normalBlockMap, foresightNormalBlock);
-            createForesightBlocks(killerBlockMap, foresightKillerBlock);
+            // destroy all disappearing blocks from last generation
+            DestroyBlocks();
+            blocksToDestroy = new List<GameObject>();
+
+            // change foresight blocks to blocks
+            UpdateForesightBlocks(normalBlockMap, foresightNormalBlocks, normalBlocks, normalBlock);
+            UpdateForesightBlocks(killerBlockMap, foresightKillerBlocks, killerBlocks, killerBlock);
+
+            // change maps
+            normalBlockMap = nextNormalBlockMap;
+            killerBlockMap = nextKillerBlockMap;
+            nextNormalBlockMap = UpdateMap(normalBlockMap, disappearNormalBlocks, foresightNormalBlocks);
+            nextKillerBlockMap = UpdateMap(killerBlockMap, disappearKillerBlocks, foresightKillerBlocks);
+
+            UpdateMapObjects();
         }
     }
 
-    int[,] updateMap(int[,] map, GameObject block, GameObject[,] blocks)
+    void UpdateMapObjects()
+    {
+        // disappear blocks
+        CreateDisappearBlocks(normalBlockMap, disappearNormalBlocks, normalBlocks, disappearNormalBlock);
+        CreateDisappearBlocks(killerBlockMap, disappearKillerBlocks, killerBlocks, disappearKillerBlock);
+
+        // foresight blocks
+        CreateForesightBlocks(normalBlockMap, foresightNormalBlocks, normalBlocks, foresightNormalBlock);
+        CreateForesightBlocks(killerBlockMap, foresightKillerBlocks, killerBlocks, foresightKillerBlock);
+    }
+
+    int[,] UpdateMap(int[,] map, List<int[]> disappearBlocks, List<int[]> foresightBlocks)
     {
         int[,] newMap = new int[map.GetLength(0), map.GetLength(1)];
 
@@ -162,7 +207,7 @@ public class MapManager : MonoBehaviour
                     int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
                     if (numOfAliveNeighbors < 2 || numOfAliveNeighbors > 3)
                     {
-                        Destroy(blocks[i, j]);
+                        disappearBlocks.Add(new int[] {i, j});
                         newMap[i, j] = 0;
                     }
                 }
@@ -171,7 +216,7 @@ public class MapManager : MonoBehaviour
                 {
                     if (CountAliveNeighbors(map, i, j) == 3)
                     {
-                        blocks[i, j] = Instantiate(block, GetWorldPosFromArrayIndices(i, j, map), Quaternion.identity, blocksParent.transform);
+                        foresightBlocks.Add(new int[] { i, j });
                         newMap[i, j] = 1;
                     }
                 }
@@ -181,43 +226,57 @@ public class MapManager : MonoBehaviour
         return newMap;
     }
 
-    void destroyForesightBlocks()
+    void CreateDisappearBlocks(int[,] map, List<int[]> disappearBlocks,
+        GameObject[,] blocks, GameObject disappearBlock)
     {
-        for (int i = allForeSightBlocks.Count - 1; i >= 0; i--)
+        // destroy blocks and create disappear blocks
+        for (int i = disappearBlocks.Count - 1; i >= 0; i--)
         {
-            Destroy(allForeSightBlocks[i]);
-            allForeSightBlocks.RemoveAt(i);
+            int row = disappearBlocks[i][0];
+            int col = disappearBlocks[i][1];
+            Destroy(blocks[row, col]);
+            blocks[row, col] = Instantiate(disappearBlock,
+                GetWorldPosFromArrayIndices(row, col, map), Quaternion.identity, blocksParent.transform);
+            blocksToDestroy.Add(blocks[row, col]);
+
+            disappearBlocks.RemoveAt(i);
         }
     }
 
-    void createForesightBlocks(int[,] map, GameObject foresightBlock)
+    void CreateForesightBlocks(int[,] map, List<int[]> foresightBlocks, GameObject[,] blocks, GameObject foresightBlock)
     {
-        for (int i = 0; i < map.GetLength(0); i++)
+        for (int i = foresightBlocks.Count - 1; i >= 0; i--)
         {
-            for (int j = 0; j < map.GetLength(1); j++)
-            {
-                // rules for alive cell
-                if (map[i, j] != 0)
-                {
-                    int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
-                    if (numOfAliveNeighbors >= 2 && numOfAliveNeighbors <= 3)
-                    {
-                        allForeSightBlocks.Add(Instantiate(foresightBlock,
-                        GetWorldPosFromArrayIndices(i, j, map), Quaternion.identity, blocksParent.transform));
-                    }
-                }
-                // rules for dead cell
-                else
-                {
-                    if (CountAliveNeighbors(map, i, j) == 3)
-                    {
-                        allForeSightBlocks.Add(Instantiate(foresightBlock,
-                            GetWorldPosFromArrayIndices(i, j, map), Quaternion.identity, blocksParent.transform));
-                    }
-                }
-            }
+            int row = foresightBlocks[i][0];
+            int col = foresightBlocks[i][1];
+            blocks[row, col] = Instantiate(foresightBlock,
+                GetWorldPosFromArrayIndices(row, col, map), Quaternion.identity, blocksParent.transform);
         }
     }
+
+    void UpdateForesightBlocks(int[,] map, List<int[]> foresightBlocks, GameObject[,] blocks, GameObject block)
+    {
+        // destroy foresight blocks and create blocks
+        for (int i = foresightBlocks.Count - 1; i >= 0; i--)
+        {
+            int row = foresightBlocks[i][0];
+            int col = foresightBlocks[i][1];
+            Destroy(blocks[row, col]);
+            blocks[row, col] = Instantiate(block,
+                GetWorldPosFromArrayIndices(row, col, map), Quaternion.identity, blocksParent.transform);
+
+            foresightBlocks.RemoveAt(i);
+        }
+    }
+
+    void DestroyBlocks()
+    {
+        foreach (GameObject block in blocksToDestroy)
+        {
+            Destroy(block);
+        }
+    }
+
 
     Vector3 GetWorldPosFromArrayIndices(int i, int j, int[,] map)
     {
