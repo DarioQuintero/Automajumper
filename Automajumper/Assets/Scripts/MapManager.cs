@@ -31,16 +31,22 @@ public class MapManager : MonoBehaviour
 
     [SerializeField] float secondsPerUpdate;
 
+    [SerializeField] AudioSource music;
+
     void Awake()
     {
         instance = this;
 
         secondsPerUpdate = Config.secondsPerUpdateNormal;
+
+        music = GameObject.Find("Music").GetComponent<AudioSource>();
     }
 
     public void SpeedUp()
     {
         secondsPerUpdate = Config.secondsPerUpdateFaster;
+
+        music.pitch = 3;
 
         // reset the cur time
         curTime = Mathf.Min(curTime, secondsPerUpdate);
@@ -49,6 +55,8 @@ public class MapManager : MonoBehaviour
     public void SlowDown()
     {
         secondsPerUpdate = Config.secondsPerUpdateNormal;
+
+        music.pitch = 1;
     }
 
     public void CreateLevel(int[,] normalBlockMapToCreate,
