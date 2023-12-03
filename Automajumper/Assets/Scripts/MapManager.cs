@@ -168,8 +168,8 @@ public class MapManager : MonoBehaviour
             blocksToDestroy = new List<GameObject>();
 
             // change foresight blocks to blocks
-            //UpdateForesightBlocks(normalBlockMap, foresightNormalBlocks, normalBlocks, normalBlock);
-            //UpdateForesightBlocks(killerBlockMap, foresightKillerBlocks, killerBlocks, killerBlock);
+            UpdateForesightBlocks(normalBlockMap, foresightNormalBlocks, normalBlocks, normalBlock);
+            UpdateForesightBlocks(killerBlockMap, foresightKillerBlocks, killerBlocks, killerBlock);
 
             // change maps
             normalBlockMap = nextNormalBlockMap;
@@ -190,8 +190,10 @@ public class MapManager : MonoBehaviour
         disappearKillerBlocks = new List<int[]>();
 
         // foresight blocks
-        //CreateForesightBlocks(normalBlockMap, foresightNormalBlocks, normalBlocks, foresightNormalBlock);
-        //CreateForesightBlocks(killerBlockMap, foresightKillerBlocks, killerBlocks, foresightKillerBlock);
+        CreateForesightBlocks(normalBlockMap, foresightNormalBlocks, normalBlocks, foresightNormalBlock);
+        CreateForesightBlocks(killerBlockMap, foresightKillerBlocks, killerBlocks, foresightKillerBlock);
+        foresightNormalBlocks = new List<int[]>();
+        foresightKillerBlocks = new List<int[]>();
     }
 
     int[,] UpdateMap(int[,] map, List<int[]> disappearBlocks, List<int[]> foresightBlocks)
@@ -262,7 +264,6 @@ public class MapManager : MonoBehaviour
             blocks[coord[0], coord[1]] = Instantiate(block,
                 GetWorldPosFromArrayIndices(coord[0], coord[1], map), Quaternion.identity, blocksParent.transform);
         }
-        foresightBlocks = new List<int[]>();
     }
 
     void DestroyBlocks()
