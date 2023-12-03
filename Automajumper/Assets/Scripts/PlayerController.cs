@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour
     private bool singleJumpUnused;
     private bool acceleratedFalling;
 
-    private float coyoteTime = 0f;
-    private bool isCoyote = true;
+    private float inputBufferTime = 0f;
+    private float offGroundTime = 0f;
+    private float coyoteTime = 0.1f;
 
 
     [SerializeField] private Rigidbody rb;
@@ -35,15 +36,14 @@ public class PlayerController : MonoBehaviour
     }
 
     public void jump() {
-        if (singleJumpUnused) {
-            acceleratedFalling = false;
-            singleJumpUnused = false;
-            jumpPressedDown = true;
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-        }
-        // if (!jumpPressedDown) {
-        //     acceleratedFalling = true;
-        // }
+        // upward velocity
+        rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+
+        // fall slower 
+        acceleratedFalling = false;
+
+        // used the jump
+        singleJumpUnused = false;
     }
 
     private bool IsGrounded()
@@ -63,21 +63,35 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (coyoteTime <= -0.09) coyoteTime = 0.5f;
-        // only can jump when landed and didn't used the single jump
-        //singleJumpUnused && 
+        // when jump key is first pressed
         if(context.started)
         {
-            if (IsGrounded()) {
-                coyoteTime = -0.1f;
+            jumpPressedDown = true;
+
+            // only can jump when landed in coyote time and didn't used the single jump
+            if ((IsGrounded() || offGroundTime < coyoteTime) && singleJumpUnused)
+            {
+                offGroundTime = coyoteTime;
+                jump();
+            }
+            
+            // otherwise give player an input buffer time
+            else
+            {
+                inputBufferTime = 0.1f;
             }
         }
-        else if(context.canceled)
+
+        // when jump key is released
+        else if (context.canceled)
         {
-            // experience accelerated falling if not pressing jumping 
-            coyoteTime = -0.1f;
-            acceleratedFalling = true;
             jumpPressedDown = false;
+
+            // experience accelerated falling if not pressing jumping 
+            acceleratedFalling = true;
+
+            // used to prevent holding the key to jump
+            singleJumpUnused = true;
         }
     }
 
@@ -96,36 +110,24 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        coyoteTime = Math.Max(-0.1f, coyoteTime - Time.deltaTime);
-        if (coyoteTime >= 0f) {
-            isCoyote = true;
-        } else {
-            isCoyote = false;
-        }
-        // when grounded
-        if (IsGrounded())
+        // decrease input buffer time and coyote time
+        inputBufferTime -= Time.deltaTime;
+        // if the jump key is being pressed
+        if (jumpPressedDown)
         {
-            if (isCoyote) {
+            // jump if on ground during input buffer time
+            if (IsGrounded() && inputBufferTime >= 0)
+            {
                 jump();
-                coyoteTime = -0.1f;
             }
-            // if the jump key is released
-            if (!jumpPressedDown)
-            {
-                // you can jump again now
-                singleJumpUnused = true;
-            }
+        }
 
-            // prevent hold jump key to jump
-            if (!singleJumpUnused)
-            {
-                jumpPressedDown = false;
-            }
-            
-            //if (Physics.OverlapSphere(hitBox.position, 0.02f, groundLayer).Length != 0) {
-            //    transform.position = LevelCreator.instance.respawnPosition;
-            //}
-            
+        // increase off ground time
+        offGroundTime += Time.deltaTime;
+        if (IsGrounded() && singleJumpUnused)
+        {
+            // start off ground time when off ground and don't reset after jumped
+            offGroundTime = 0f;
         }
 
         // smoother jump George wrote; can't help to explain
