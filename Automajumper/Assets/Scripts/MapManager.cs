@@ -147,7 +147,6 @@ public class MapManager : MonoBehaviour
         // start the time
         curTime = secondsPerUpdate;
 
-        
         nextNormalBlockMap = UpdateMap(normalBlockMap, disappearNormalBlocks, foresightNormalBlocks);
         nextKillerBlockMap = UpdateMap(killerBlockMap, disappearKillerBlocks, foresightKillerBlocks);
         UpdateMapObjects();
@@ -186,14 +185,10 @@ public class MapManager : MonoBehaviour
         // disappear blocks
         CreateDisappearBlocks(normalBlockMap, disappearNormalBlocks, normalBlocks, disappearNormalBlock);
         CreateDisappearBlocks(killerBlockMap, disappearKillerBlocks, killerBlocks, disappearKillerBlock);
-        disappearNormalBlocks = new List<int[]>();
-        disappearKillerBlocks = new List<int[]>();
 
         // foresight blocks
         CreateForesightBlocks(normalBlockMap, foresightNormalBlocks, normalBlocks, foresightNormalBlock);
         CreateForesightBlocks(killerBlockMap, foresightKillerBlocks, killerBlocks, foresightKillerBlock);
-        foresightNormalBlocks = new List<int[]>();
-        foresightKillerBlocks = new List<int[]>();
     }
 
     int[,] UpdateMap(int[,] map, List<int[]> disappearBlocks, List<int[]> foresightBlocks)
@@ -234,13 +229,17 @@ public class MapManager : MonoBehaviour
     void CreateDisappearBlocks(int[,] map, List<int[]> disappearBlocks,
         GameObject[,] blocks, GameObject disappearBlock)
     {
-        // destroy normal blocks that will disappear and create disappear blocks
-        foreach (int[] coord in disappearBlocks)
+        // destroy blocks and create disappear blocks
+        for (int i = disappearBlocks.Count - 1; i >= 0; i--)
         {
-            Destroy(blocks[coord[0], coord[1]]);
-            blocks[coord[0], coord[1]] = Instantiate(disappearBlock,
-                GetWorldPosFromArrayIndices(coord[0], coord[1], map), Quaternion.identity, blocksParent.transform);
-            blocksToDestroy.Add(blocks[coord[0], coord[1]]);
+            int row = disappearBlocks[i][0];
+            int col = disappearBlocks[i][1];
+            Destroy(blocks[row, col]);
+            blocks[row, col] = Instantiate(disappearBlock,
+                GetWorldPosFromArrayIndices(row, col, map), Quaternion.identity, blocksParent.transform);
+            blocksToDestroy.Add(blocks[row, col]);
+
+            disappearBlocks.RemoveAt(i);
         }
     }
 
@@ -258,11 +257,15 @@ public class MapManager : MonoBehaviour
     void UpdateForesightBlocks(int[,] map, List<int[]> foresightBlocks, GameObject[,] blocks, GameObject block)
     {
         // destroy foresight blocks and create blocks
-        foreach (int[] coord in foresightBlocks)
+        for (int i = foresightBlocks.Count - 1; i >= 0; i--)
         {
-            Destroy(blocks[coord[0], coord[1]]);
-            blocks[coord[0], coord[1]] = Instantiate(block,
-                GetWorldPosFromArrayIndices(coord[0], coord[1], map), Quaternion.identity, blocksParent.transform);
+            int row = foresightBlocks[i][0];
+            int col = foresightBlocks[i][1];
+            Destroy(blocks[row, col]);
+            blocks[row, col] = Instantiate(block,
+                GetWorldPosFromArrayIndices(row, col, map), Quaternion.identity, blocksParent.transform);
+
+            foresightBlocks.RemoveAt(i);
         }
     }
 
