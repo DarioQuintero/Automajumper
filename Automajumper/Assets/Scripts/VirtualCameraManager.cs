@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class VirtualCameraManager : MonoBehaviour
 {
+    [SerializeField] int cameraIndex;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("CameraChange"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            LevelManager.instance.nextCamera();
-            Destroy(other.gameObject);
+            LevelManager.instance.NextCamera(cameraIndex);
+            Destroy(gameObject);
         }
     }
 }

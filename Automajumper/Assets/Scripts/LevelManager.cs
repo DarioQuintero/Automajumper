@@ -11,7 +11,6 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
 
     public List<CinemachineVirtualCamera> vcamList;
-    private int cameraIndex = 0;
     [SerializeField] int levelNum;
 
     [SerializeField] RawImage levelTransitionImage;
@@ -49,11 +48,11 @@ public class LevelManager : MonoBehaviour
     {
         if (levelNum == 1)
         {
-            yield return new WaitForSeconds(6f);
+            yield return new WaitForSeconds(4f);
         }
         else if (levelNum == 2)
         {
-            yield return new WaitForSeconds(9f);
+            yield return new WaitForSeconds(7f);
         }
         else if (levelNum == 3)
         {
@@ -93,10 +92,12 @@ public class LevelManager : MonoBehaviour
         levelTransitionImage.gameObject.SetActive(false);
     }
 
-    public void nextCamera()
+    public void NextCamera(int cameraIndex)
     {
-        vcamList[cameraIndex].gameObject.SetActive(false);
-        cameraIndex += 1;
-        vcamList[cameraIndex].gameObject.SetActive(true);
+        for (int i = 0; i < cameraIndex; i++)
+        {
+            vcamList[cameraIndex].gameObject.SetActive(false);
+        }
+        vcamList[cameraIndex + 1].gameObject.SetActive(true);
     }
 }

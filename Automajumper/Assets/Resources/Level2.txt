@@ -1,4 +1,4 @@
-﻿Spawn Position: 0 11.5
+﻿Spawn Position: 85.5 55
 
 Map Size: 95 53
 Checkpoints: 28 9 45.5 22 54 34 85.5 49 87.5 37 85 24
