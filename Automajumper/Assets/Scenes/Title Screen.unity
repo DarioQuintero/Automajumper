@@ -1834,6 +1834,9 @@ MonoBehaviour:
   levelCreator: {fileID: 6098670422073156870, guid: 969693daec4de40329a4c3662200f50f, type: 3}
   mapManager: {fileID: 5012518439824611137, guid: b0f70327ab8ef42bea5698411f672d27, type: 3}
   block: {fileID: 8687150261473996953, guid: 83a6b7c94fe90462f810a8a61c1a375a, type: 3}
+  curTime: 0
+  started: 1
+  blocksParent: {fileID: 0}
 --- !u!4 &926887772
 Transform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,14 @@ public class TitleScreenManager : MonoBehaviour
 
     [SerializeField] GameObject block;
 
+    [SerializeField] float curTime;
+    [SerializeField] bool started;
+
+    [SerializeField] GameObject blocksParent;
+
+    [SerializeField] bool[,] blockBoolMap;
+    [SerializeField] GameObject[,] blockObjectMap;
+
     private void Awake()
     {
         Camera.main.transform.position = new Vector3(257 / 2, 54 / 2, -10);
@@ -20,6 +29,20 @@ public class TitleScreenManager : MonoBehaviour
     private void Start()
     {
         ParseLevel();
+    }
+
+    private void Update()
+    {
+        if (started)
+            curTime += Time.deltaTime;
+
+        // for every transition time
+        if (curTime > 0.1f)
+        {
+            curTime = 0;
+
+            blockBoolMap = UpdateMap(blockBoolMap);
+        }
     }
 
     public void ParseLevel()
@@ -51,38 +74,19 @@ public class TitleScreenManager : MonoBehaviour
         int newline2 = toProcess.IndexOf('\n');
 
         // get block data after skipping an empty line
-        toProcess = toProcess.Substring(newline2 + 2);
+        toProcess = toProcess.Substring(newline2 + 1);
 
         // initialize for the loop
-        int[,] blockMap = new int[size[0], size[1]];
-        int[,] killerBlockMap = new int[0, 0];
-
+        blockBoolMap = new bool[size[0], size[1]];
+ 
         // assign normal blocks
-        int index = AssignBlocks(toProcess, blockMap);
-
-        // get the rest of the data by skipping an empty line
-        toProcess = toProcess.Substring(index + 2);
-        string[] dataLines = toProcess.Split("\n");
-
-        // if there is only one line left, then there is no red block
-        if (dataLines.Length != 1)
-        {
-            killerBlockMap = new int[size[0], size[1]];
-
-            // assign red blocks
-            index = AssignBlocks(toProcess, killerBlockMap);
-            // get the rest of the data by skipping an empty line
-            toProcess = toProcess.Substring(index + 2);
-        }
-
-        // finishline coordinates
-        string[] finishLineCoord = toProcess.Substring("Finishline: ".Length).Split();
+        AssignBlocks(toProcess);
 
         // create the blocks, checkpoints, and finishline in the level
-        CreateLevel(blockMap);
+        CreateLevel();
     }
 
-    int AssignBlocks(string data, int[,] map)
+    int AssignBlocks(string data)
     {
         int index = 0;
         int[] curIndices = { 0, 0 };
@@ -115,7 +119,7 @@ public class TitleScreenManager : MonoBehaviour
                 {
                     while (count-- > 0)
                     {
-                        map[curIndices[0], curIndices[1]] = 1;
+                        blockBoolMap[curIndices[0], curIndices[1]] = true;
                         curIndices[1]++;
                     }
                 }
@@ -135,24 +139,98 @@ public class TitleScreenManager : MonoBehaviour
         return index + 1;
     }
 
-    public void CreateLevel(int[,] normalBlockMap)
+    public void CreateLevel()
     {
-        GameObject blocksParent = new("Block Parent");
+        blocksParent = new("Block Parent");
+
+        blockObjectMap = new GameObject[blockBoolMap.GetLength(0), blockBoolMap.GetLength(1)];
 
         // generate the normal blocks
-        for (int i = 0; i < normalBlockMap.GetLength(0); i++)
+        for (int i = 0; i < blockBoolMap.GetLength(0); i++)
         {
-            for (int j = 0; j < normalBlockMap.GetLength(1); j++)
+            for (int j = 0; j < blockBoolMap.GetLength(1); j++)
             {
-                if (normalBlockMap[i, j] == 1)
+                if (blockBoolMap[i, j])
                 {
-                    Instantiate(block, GetWorldPosFromArrayIndices(i, j, normalBlockMap), Quaternion.identity, blocksParent.transform);
+                     blockObjectMap[i, j] = Instantiate(block,
+                         GetWorldPosFromArrayIndices(i, j, blockBoolMap), Quaternion.identity, blocksParent.transform);
                 }
             }
         }
     }
 
-    Vector3 GetWorldPosFromArrayIndices(int i, int j, int[,] map)
+    bool[,] UpdateMap(bool[,] map)
+    {
+        bool[,] newMap = new bool[map.GetLength(0), map.GetLength(1)];
+
+        for (int i = 0; i < map.GetLength(0); i++)
+        {
+            for (int j = 0; j < map.GetLength(1); j++)
+            {
+                newMap[i, j] = map[i, j];
+
+                // rules for alive cell to die
+                if (map[i, j])
+                {
+                    int numOfAliveNeighbors = CountAliveNeighbors(map, i, j);
+                    if (numOfAliveNeighbors < 2 || numOfAliveNeighbors > 3)
+                    {
+                        Destroy(blockObjectMap[i, j]);
+                        newMap[i, j] = false;
+                    }
+                }
+                // rules for dead cell to be alive
+                else
+                {
+                    if (CountAliveNeighbors(map, i, j) == 3)
+                    {
+                        blockObjectMap[i, j] = Instantiate(block,
+                         GetWorldPosFromArrayIndices(i, j, blockBoolMap), Quaternion.identity, blocksParent.transform);
+                        newMap[i, j] = true;
+                    }
+                }
+            }
+        }
+
+        return newMap;
+    }
+
+    int CountAliveNeighbors(bool[,] map, int i, int j)
+    {
+        int ans = 0;
+
+        // left and right neighbors
+        if (j - 1 >= 0 && map[i, j - 1])
+            ans++;
+        if (j + 1 < map.GetLength(1) && map[i, j + 1])
+            ans++;
+
+        // top three neighbors
+        if (i - 1 >= 0)
+        {
+            if (map[i - 1, j])
+                ans++;
+            if (j - 1 >= 0 && map[i - 1, j - 1])
+                ans++;
+            if (j + 1 < map.GetLength(1) && map[i - 1, j + 1])
+                ans++;
+        }
+
+        // top three neighbors
+        if (i + 1 < map.GetLength(0))
+        {
+            if (map[i + 1, j])
+                ans++;
+            if (j - 1 >= 0 && map[i + 1, j - 1])
+                ans++;
+            if (j + 1 < map.GetLength(1) && map[i + 1, j + 1])
+                ans++;
+        }
+
+        return ans;
+    }
+
+    Vector3 GetWorldPosFromArrayIndices(int i, int j, bool[,] map)
     {
         // transpose the map and reflect it across the middle line
         return new Vector3(j, map.GetLength(0) - i - 1, 0);
