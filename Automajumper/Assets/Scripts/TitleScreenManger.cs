@@ -4,6 +4,7 @@ using Cinemachine;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class TitleScreenManager : MonoBehaviour
@@ -19,6 +20,7 @@ public class TitleScreenManager : MonoBehaviour
     [SerializeField] GameObject blocksParent;
 
     [SerializeField] bool[,] blockBoolMap;
+    [SerializeField] GameObject whiteCover;
     [SerializeField] GameObject[,] blockObjectMap;
 
     private void Awake()
@@ -29,12 +31,16 @@ public class TitleScreenManager : MonoBehaviour
     private void Start()
     {
         ParseLevel();
+        StartCoroutine(nameof(FadeOut));
     }
 
     private void Update()
     {
         if (started)
+        {
             curTime += Time.deltaTime;
+        }
+
 
         // for every transition time
         if (curTime > 0.1f)
@@ -43,6 +49,20 @@ public class TitleScreenManager : MonoBehaviour
 
             blockBoolMap = UpdateMap(blockBoolMap);
         }
+    }
+
+    IEnumerator FadeOut()
+    {
+        int steps = 100;
+        for (int i = 0; i < steps; i++)
+        {
+            yield return new WaitForSeconds(3f / steps);
+            block.GetComponent<Renderer>().sharedMaterial.color = new Color(i / 100f, i / 100f, i / 100f);
+        }
+
+        block.GetComponent<Renderer>().sharedMaterial.color = new Color(0, 0, 0);
+        whiteCover.SetActive(true);
+        SceneManager.LoadScene("PLC");
     }
 
     public void ParseLevel()
