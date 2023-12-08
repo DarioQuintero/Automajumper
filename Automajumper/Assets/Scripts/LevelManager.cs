@@ -4,6 +4,7 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class LevelManager : MonoBehaviour
 {
@@ -54,6 +55,10 @@ public class LevelManager : MonoBehaviour
         else if (levelNum == 2)
         {
             yield return new WaitForSeconds(9f);
+        }
+        else if (levelNum == 3)
+        {
+            yield return new WaitForSeconds(2f);
         }
 
 
