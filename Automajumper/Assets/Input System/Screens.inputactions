@@ -1,5 +1,5 @@
 {
-    "name": "TitleScreen",
+    "name": "Screens",
     "maps": [
         {
             "name": "Title Screen",
@@ -35,6 +35,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Start Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Cut Screen",
+            "id": "72ff1bb1-7eb4-4a28-a121-90a472c38fa4",
+            "actions": [
+                {
+                    "name": "Skip Forward",
+                    "type": "Button",
+                    "id": "3bd20d42-ad72-445b-ba32-ceb4412a79c1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9bd597c1-8d27-4de0-99f7-cf67f744e0f0",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip Forward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

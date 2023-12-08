@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene("Level " + 1);
+        SceneManager.LoadScene("Cut Scene 0");
     }
 
     public void LevelSelect()
