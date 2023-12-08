@@ -23,11 +23,13 @@ public class UIManager : MonoBehaviour
 
     public void LevelSelect()
     {
+        PLCScreen.SetActive(false);
         levelSelectScreen.SetActive(true);
     }
 
     public void Control()
     {
+        PLCScreen.SetActive(false);
         controlScreen.SetActive(true);
     }
 
