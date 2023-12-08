@@ -9,6 +9,7 @@ TagManager:
   - Checkpoint
   - CameraChangeTest
   - CameraChange
+  - Dialogue
   layers:
   - Default
   - TransparentFX
