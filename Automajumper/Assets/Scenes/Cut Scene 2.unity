@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028328, g: 0.22571328, b: 0.3069218, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!21 &420113184
+--- !u!21 &398465846
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -162,7 +162,11 @@ Material:
     m_Colors:
     - _WidthHeightRadius: {r: 100, g: 100, b: 20, a: 0}
   m_BuildTextureStacks: []
+<<<<<<< Updated upstream
 --- !u!21 &733350711
+=======
+--- !u!21 &420113184
+>>>>>>> Stashed changes
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -402,7 +406,11 @@ Material:
     m_Colors:
     - _WidthHeightRadius: {r: 100, g: 100, b: 20, a: 0}
   m_BuildTextureStacks: []
+<<<<<<< Updated upstream
 --- !u!21 &1676202288
+=======
+--- !u!21 &1768415334
+>>>>>>> Stashed changes
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -548,7 +556,11 @@ PrefabInstance:
     - target: {fileID: 1307124783497631493, guid: 4100db78e35bd4ce4b39fa89f65f09e6, type: 3}
       propertyPath: m_VideoClip
       value: 
+<<<<<<< Updated upstream
       objectReference: {fileID: 32900000, guid: ae147e33cd4af4c33acec824c6eccc8f, type: 3}
+=======
+      objectReference: {fileID: 32900000, guid: c57d9e117d236bf86ad9403cb13180ac, type: 3}
+>>>>>>> Stashed changes
     - target: {fileID: 1598770897928740763, guid: 4100db78e35bd4ce4b39fa89f65f09e6, type: 3}
       propertyPath: m_Material
       value: 
