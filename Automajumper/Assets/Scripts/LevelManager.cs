@@ -47,7 +47,11 @@ public class LevelManager : MonoBehaviour
     {
         if (levelNum == 1)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(6f);
+        }
+        else if (levelNum == 2)
+        {
+            yield return new WaitForSeconds(9f);
         }
 
 
