@@ -40,7 +40,6 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(nameof(FadeIn));
     }
 
-
     public void LevelTransition()
     {
         StartCoroutine(nameof(WaitForNextLevel));
