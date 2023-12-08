@@ -31,6 +31,8 @@ public class LevelManager : MonoBehaviour
         Instantiate(levelCreator);
         Instantiate(mapManager);
 
+        MapManager.instance.ChangeForesightBlockColor(levelNum);
+
         // need to be in start to make sure Level Creator instance is assigned
         LevelCreator.instance.ParseLevel(levelNum);
 

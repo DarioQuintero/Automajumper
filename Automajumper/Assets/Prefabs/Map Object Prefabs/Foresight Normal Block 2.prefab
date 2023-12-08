@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 995316668853075880}
   - component: {fileID: 3308236133923466113}
   m_Layer: 3
-  m_Name: Foresight Normal Block
+  m_Name: Foresight Normal Block 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fbdc43d93fcfa2d4c8beb57ea46d159b, type: 2}
+  - {fileID: 2100000, guid: 9360c7117e4b943e0af168fda0701355, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

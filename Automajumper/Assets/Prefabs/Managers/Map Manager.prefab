@@ -46,12 +46,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalBlock: {fileID: 8687150261473996953, guid: 0f40d745d78e2446aa34da4ead8d913b, type: 3}
   foresightNormalBlock: {fileID: 7337814208661392763, guid: a2004d37e6a62464e8acf6f441329945, type: 3}
+  foresightNormalBlockList:
+  - {fileID: 7337814208661392763, guid: a2004d37e6a62464e8acf6f441329945, type: 3}
+  - {fileID: 7337814208661392763, guid: fc18e8caafee844519ce3297bd78fa5d, type: 3}
+  - {fileID: 7337814208661392763, guid: fb3ffa52756ce4489a12ba1081bf7fd4, type: 3}
   disappearNormalBlock: {fileID: 8687150261473996953, guid: d3167ec9d100b47d4b77ef0f0190a738, type: 3}
   killerBlock: {fileID: 8286687537547733717, guid: 93979bdc9d86848c995cb6760859a48a, type: 3}
   foresightKillerBlock: {fileID: 7337814208661392763, guid: 8e345d2a0e8a849fca4b8c22e0362dab, type: 3}
   disappearKillerBlock: {fileID: 8687150261473996953, guid: 28f8ae46b176147e3800f9ecfb91bbb5, type: 3}
   line: {fileID: 3943902931969634868, guid: b5b4c4763f1814bdbb44098a0f6883aa, type: 3}
-  checkpoint: {fileID: 906554994779714203, guid: 22f8cfec8dcc02931807f6e350b59fc7, type: 3}
+  checkpoint: {fileID: 906554994779714203, guid: 09308765051714e088744f915ca69b39, type: 3}
   finishLine: {fileID: 906554994779714203, guid: 6439086099b0a46e2b31f5af377e8934, type: 3}
   curTime: 0
   secondsPerUpdate: 0
