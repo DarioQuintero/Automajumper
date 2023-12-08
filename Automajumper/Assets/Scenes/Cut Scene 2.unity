@@ -162,7 +162,7 @@ Material:
     m_Colors:
     - _WidthHeightRadius: {r: 100, g: 100, b: 20, a: 0}
   m_BuildTextureStacks: []
---- !u!21 &733350711
+--- !u!21 &708498650
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -402,7 +402,7 @@ Material:
     m_Colors:
     - _WidthHeightRadius: {r: 100, g: 100, b: 20, a: 0}
   m_BuildTextureStacks: []
---- !u!21 &1676202288
+--- !u!21 &1793206019
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -548,7 +548,7 @@ PrefabInstance:
     - target: {fileID: 1307124783497631493, guid: 4100db78e35bd4ce4b39fa89f65f09e6, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: ae147e33cd4af4c33acec824c6eccc8f, type: 3}
+      objectReference: {fileID: 32900000, guid: a2ea3b8bede004d59840283a4d77c757, type: 3}
     - target: {fileID: 1598770897928740763, guid: 4100db78e35bd4ce4b39fa89f65f09e6, type: 3}
       propertyPath: m_Material
       value: 
