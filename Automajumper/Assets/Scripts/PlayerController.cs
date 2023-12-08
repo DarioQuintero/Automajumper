@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,10 +30,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator anim;
 
+    private TextMeshProUGUI checkpointReached;
+
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        GameObject canvas = GameObject.Find("Canvas");
+        checkpointReached = canvas.transform.Find("CPReached").gameObject.GetComponent<TextMeshProUGUI>();
+        checkpointReached.gameObject.SetActive(false);
     }
 
     public void jump() {
@@ -173,6 +179,8 @@ public class PlayerController : MonoBehaviour
         {
             LevelCreator.instance.respawnPosition = other.transform.position;
             Destroy(other.gameObject);
+            checkpointReached.gameObject.SetActive(true);
+            Invoke(nameof(hideCheckpointReached), 3f);
         }
 
         if (other.CompareTag("FinishLine") && IsGrounded())
@@ -180,6 +188,11 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             LevelManager.instance.levelTransition();
         }
+    }
+
+    private void hideCheckpointReached()
+    {
+        checkpointReached.gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter(Collision collision)

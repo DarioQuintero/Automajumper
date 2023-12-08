@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public GameObject dialogueObject;
-    public TextMeshProUGUI textMesh;
+    private GameObject dialogueObject;
+    private TextMeshProUGUI textMesh;
 
     void Awake() {
         GameObject canvas = GameObject.Find("Canvas");
