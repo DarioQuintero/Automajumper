@@ -30,6 +30,8 @@ public class TitleScreenManager : MonoBehaviour
     {
         Camera.main.transform.position = new Vector3(257 / 2, 54 / 2, -10);
 
+        block.GetComponent<Renderer>().sharedMaterial.color = new Color(0, 0, 0);
+
         DontDestroyOnLoad(music);
     }
 

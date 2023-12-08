@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2568108069794368725}
   m_Layer: 3
   m_Name: Disappear Killer Block
-  m_TagString: Untagged
+  m_TagString: Killer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
