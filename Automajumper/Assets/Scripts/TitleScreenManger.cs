@@ -24,9 +24,15 @@ public class TitleScreenManager : MonoBehaviour
     [SerializeField] GameObject whiteCover;
     [SerializeField] GameObject[,] blockObjectMap;
 
+    [SerializeField] GameObject music;
+
     private void Awake()
     {
         Camera.main.transform.position = new Vector3(257 / 2, 54 / 2, -10);
+
+        block.GetComponent<Renderer>().sharedMaterial.color = new Color(0, 0, 0);
+
+        DontDestroyOnLoad(music);
     }
 
     private void Start()

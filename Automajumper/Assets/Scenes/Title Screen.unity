@@ -441,6 +441,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7701218102029409948, guid: 1ffde53e8f2adba19bb6295b9914eec7, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8ecdf9db890d4440f912c5ab2400f42c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -483,6 +487,7 @@ MonoBehaviour:
   started: 0
   blocksParent: {fileID: 0}
   whiteCover: {fileID: 777451427}
+  music: {fileID: 1644742780}
 --- !u!4 &926887772
 Transform:
   m_ObjectHideFlags: 0
@@ -539,6 +544,14 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 68be520a-972e-4c65-97f9-ff1d04c20365
     m_ActionName: Title Screen/Start Game[/Mouse/leftButton,/Keyboard/anyKey]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3bd20d42-ad72-445b-ba32-ceb4412a79c1
+    m_ActionName: Cut Screen/Skip Forward[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6ac3e4e4-8617-4aec-940e-b47b2203448d
+    m_ActionName: Cut Screen/Show Skip Instruction[/Mouse/leftButton,/Keyboard/anyKey]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Title Screen
@@ -612,6 +625,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1644742780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 584630301323788535, guid: 1ffde53e8f2adba19bb6295b9914eec7, type: 3}
+  m_PrefabInstance: {fileID: 878518676}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1983321954
 GameObject:
   m_ObjectHideFlags: 0

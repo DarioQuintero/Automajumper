@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
 
     public void Play()
     {
+        Destroy(GameObject.Find("Music"));
+
         SceneManager.LoadScene("Cut Scene 0");
     }
 
@@ -35,6 +37,8 @@ public class UIManager : MonoBehaviour
 
     public void PlayLevel(int levelNum)
     {
+        Destroy(GameObject.Find("Music"));
+
         SceneManager.LoadScene("Level " + levelNum);
     }
 

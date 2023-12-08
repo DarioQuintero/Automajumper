@@ -31,31 +31,37 @@ public class LevelManager : MonoBehaviour
         Instantiate(levelCreator);
         Instantiate(mapManager);
 
+        MapManager.instance.ChangeForesightBlockColor(levelNum);
+
         // need to be in start to make sure Level Creator instance is assigned
         LevelCreator.instance.ParseLevel(levelNum);
 
-        StartCoroutine(nameof(fadeIn));
+        StartCoroutine(nameof(FadeIn));
     }
 
-    public void nextLevel()
+
+    public void LevelTransition()
     {
-        SceneManager.LoadScene("Cut Scene " + levelNum);
+        StartCoroutine(nameof(WaitForNextLevel));
     }
 
-    public void nextCamera()
+    IEnumerator WaitForNextLevel()
     {
-        vcamList[cameraIndex].gameObject.SetActive(false);
-        cameraIndex += 1;
-        vcamList[cameraIndex].gameObject.SetActive(true);
-    }
+        if (levelNum == 1)
+        {
+            yield return new WaitForSeconds(6f);
+        }
+        else if (levelNum == 2)
+        {
+            yield return new WaitForSeconds(9f);
+        }
 
-    public void levelTransition()
-    {
+
         levelTransitionImage.gameObject.SetActive(true);
-        StartCoroutine(nameof(fadeOut));
+        StartCoroutine(nameof(FadeOut));
     }
 
-    IEnumerator fadeOut()
+    IEnumerator FadeOut()
     {
         int steps = 100;
         for (int i = 0; i < steps; i++)
@@ -63,10 +69,15 @@ public class LevelManager : MonoBehaviour
             yield return new WaitForSeconds(1f / steps);
             levelTransitionImage.color = new Color(0, 0, 0, i / 100f);
         }
-        nextLevel();
+        NextLevel();
     }
 
-    IEnumerator fadeIn()
+    public void NextLevel()
+    {
+        SceneManager.LoadScene("Cut Scene " + levelNum);
+    }
+
+    IEnumerator FadeIn()
     {
         levelTransitionImage.gameObject.SetActive(true);
         int steps = 100;
@@ -76,5 +87,12 @@ public class LevelManager : MonoBehaviour
             levelTransitionImage.color = new Color(0, 0, 0, 1 - i / 100f);
         }
         levelTransitionImage.gameObject.SetActive(false);
+    }
+
+    public void nextCamera()
+    {
+        vcamList[cameraIndex].gameObject.SetActive(false);
+        cameraIndex += 1;
+        vcamList[cameraIndex].gameObject.SetActive(true);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+using static Cinemachine.DocumentationSortingAttribute;
 
 public class MapManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class MapManager : MonoBehaviour
 
     [SerializeField] GameObject normalBlock;
     [SerializeField] GameObject foresightNormalBlock;
+    [SerializeField] List<GameObject> foresightNormalBlockList;
     [SerializeField] GameObject disappearNormalBlock;
     [SerializeField] GameObject killerBlock;
     [SerializeField] GameObject foresightKillerBlock;
@@ -47,6 +49,11 @@ public class MapManager : MonoBehaviour
         secondsPerUpdate = Config.secondsPerUpdateNormal;
 
         music = GameObject.Find("Music").GetComponent<AudioSource>();
+    }
+
+    public void ChangeForesightBlockColor(int levelNum)
+    {
+        foresightNormalBlock = foresightNormalBlockList[levelNum - 1];
     }
 
     public void SpeedUp()
