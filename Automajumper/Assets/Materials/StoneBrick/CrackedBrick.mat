@@ -57,6 +57,6 @@ Material:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _CrackUV: 0.14
-    - _EmissionStrength: 1.75
+    - _EmissionStrength: 0
     m_Colors: []
   m_BuildTextureStacks: []

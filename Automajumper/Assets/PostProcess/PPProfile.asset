@@ -1404,30 +1404,30 @@ MonoBehaviour:
   active: 1
   enabled:
     overrideState: 1
-    value: 1
+    value: 0
   intensity:
-    overrideState: 1
-    value: 6.14
+    overrideState: 0
+    value: 2.45
   threshold:
     overrideState: 1
-    value: 1.04
+    value: 1.89
   softKnee:
-    overrideState: 1
+    overrideState: 0
     value: 0.298
   clamp:
     overrideState: 0
     value: 513.4
   diffusion:
-    overrideState: 1
+    overrideState: 0
     value: 6.17
   anamorphicRatio:
-    overrideState: 1
+    overrideState: 0
     value: -0.5
   color:
     overrideState: 1
     value: {r: 1, g: 1, b: 1, a: 1}
   fastMode:
-    overrideState: 1
+    overrideState: 0
     value: 0
   dirtTexture:
     overrideState: 0
