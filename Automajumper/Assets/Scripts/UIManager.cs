@@ -7,16 +7,28 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] GameObject LevelSelectPopup;
+    [SerializeField] GameObject PLCScreen;
+    [SerializeField] GameObject controlScreen;
+    [SerializeField] GameObject levelSelectScreen;
 
     private void Awake()
     {
-        LevelSelectPopup.SetActive(false);
+        BackToPLC();
     }
 
     public void Play()
     {
-        LevelSelectPopup.SetActive(true);
+        SceneManager.LoadScene("Level " + 1);
+    }
+
+    public void LevelSelect()
+    {
+        levelSelectScreen.SetActive(true);
+    }
+
+    public void Control()
+    {
+        controlScreen.SetActive(true);
     }
 
     public void PlayLevel(int levelNum)
@@ -24,8 +36,10 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene("Level " + levelNum);
     }
 
-    public void Close()
+    public void BackToPLC()
     {
-        LevelSelectPopup.SetActive(false);
+        controlScreen.SetActive(false);
+        levelSelectScreen.SetActive(false);
+        PLCScreen.SetActive(true);
     }
 }

@@ -14,6 +14,16 @@ public class PLCManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach (Image buttonImage in buttonImages)
+        {
+            buttonImage.color = new Color(255, 255, 255, 0);
+        }
+
+        foreach (TextMeshProUGUI text in texts)
+        {
+            text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
+        }
+
         StartCoroutine(nameof(FadeIn));
     }
 
