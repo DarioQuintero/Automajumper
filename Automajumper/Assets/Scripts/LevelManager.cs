@@ -33,6 +33,8 @@ public class LevelManager : MonoBehaviour
 
         // need to be in start to make sure Level Creator instance is assigned
         LevelCreator.instance.ParseLevel(levelNum);
+
+        StartCoroutine(nameof(fadeIn));
     }
 
     public void nextLevel()
