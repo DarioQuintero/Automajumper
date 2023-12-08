@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class CutScreenManager : MonoBehaviour
 {
@@ -10,6 +11,13 @@ public class CutScreenManager : MonoBehaviour
     [SerializeField] GameObject skipInstruction;
     [SerializeField] bool skipInstructionShown;
     [SerializeField] int displayCount = 0;
+    [SerializeField] VideoPlayer videoPlayer;
+
+    private void Awake()
+    {
+        videoPlayer.loopPointReached += NextLevel;
+    }
+
 
     public void OnSkipForward()
     {
@@ -35,5 +43,10 @@ public class CutScreenManager : MonoBehaviour
 
         if (displayCount == 0)
             skipInstruction.SetActive(false);
+    }
+
+    void NextLevel(VideoPlayer videoPlayer)
+    {
+        SceneManager.LoadScene("Level " + (levelNum + 1));
     }
 }

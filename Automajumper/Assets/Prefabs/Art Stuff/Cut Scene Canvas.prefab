@@ -508,6 +508,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelNum: 0
   skipInstruction: {fileID: 2437497819124583713}
+  skipInstructionShown: 0
+  displayCount: 0
+  videoPlayer: {fileID: 1307124783497631493}
 --- !u!114 &4871293729113152479
 MonoBehaviour:
   m_ObjectHideFlags: 0
