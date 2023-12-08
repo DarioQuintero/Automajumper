@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,6 +31,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Animator anim;
 
+    [SerializeField] private GameObject bounds;
+
     private TextMeshProUGUI checkpointReached;
 
     private void Start()
@@ -39,6 +42,8 @@ public class PlayerController : MonoBehaviour
         GameObject canvas = GameObject.Find("Canvas");
         checkpointReached = canvas.transform.Find("CPReached").gameObject.GetComponent<TextMeshProUGUI>();
         checkpointReached.gameObject.SetActive(false);
+
+        bounds = GameObject.Find("Bounds");
     }
 
     public void jump() {
@@ -185,6 +190,8 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("FinishLine") && IsGrounded())
         {
+            // last minute change to destroy the bound
+            Destroy(bounds);
             Destroy(other.gameObject);
             LevelManager.instance.LevelTransition();
         }
