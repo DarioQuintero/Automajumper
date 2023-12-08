@@ -39,7 +39,7 @@ public class LevelManager : MonoBehaviour
 
     public void nextLevel()
     {
-        SceneManager.LoadScene("Level " + (levelNum + 1));
+        SceneManager.LoadScene("Cut Scene " + levelNum);
     }
 
     public void nextCamera()
