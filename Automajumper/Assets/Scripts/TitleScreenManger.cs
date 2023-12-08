@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -31,7 +32,6 @@ public class TitleScreenManager : MonoBehaviour
     private void Start()
     {
         ParseLevel();
-        StartCoroutine(nameof(FadeOut));
     }
 
     private void Update()
@@ -49,6 +49,12 @@ public class TitleScreenManager : MonoBehaviour
 
             blockBoolMap = UpdateMap(blockBoolMap);
         }
+    }
+
+    public void OnGameStarted()
+    {
+        started = true;
+        StartCoroutine(nameof(FadeOut));
     }
 
     IEnumerator FadeOut()
