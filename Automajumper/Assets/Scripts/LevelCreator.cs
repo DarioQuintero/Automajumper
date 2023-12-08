@@ -80,7 +80,7 @@ public class LevelCreator : MonoBehaviour
         // finishline coordinates
         string[] finishLineCoord = toProcess.Substring("Finishline: ".Length).Split();
 
-        // create scene objects
+        // create scene objects 
         CreateSceneObjects();
 
         // create the blocks, checkpoints, and finishline in the level

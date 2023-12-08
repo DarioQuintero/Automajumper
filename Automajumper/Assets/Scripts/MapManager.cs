@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class MapManager : MonoBehaviour
 {
@@ -23,8 +19,6 @@ public class MapManager : MonoBehaviour
     [SerializeField] GameObject finishLine;
 
     private GameObject blocksParent;
-
-    private GameObject checkpointParent;
 
     private int[,] normalBlockMap;
     private int[,] killerBlockMap;
