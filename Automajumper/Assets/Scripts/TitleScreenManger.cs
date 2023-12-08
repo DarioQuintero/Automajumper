@@ -1,37 +1,37 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class LevelCreator : MonoBehaviour
+
+public class TitleScreenManager : MonoBehaviour
 {
-    public static LevelCreator instance;
+    [SerializeField] GameObject levelCreator;
+    [SerializeField] GameObject mapManager;
 
-    public Vector3 respawnPosition;
+    [SerializeField] GameObject block;
 
-    [SerializeField] GameObject character;
-
-    //[SerializeField] CinemachineVirtualCamera vCamera;
-
-    public void Awake()
+    private void Awake()
     {
-        instance = this;
+        Camera.main.transform.position = new Vector3(257 / 2, 54 / 2, -10);
     }
 
-    public void ParseLevel(int levelNum)
+    private void Start()
+    {
+        ParseLevel();
+    }
+
+    public void ParseLevel()
     {
         // get string to process 
-        string toProcess = Resources.Load<TextAsset>("Level" + levelNum).ToString();
+        string toProcess = Resources.Load<TextAsset>("TitleScreen").ToString();
         // fix Window's problem
         toProcess = toProcess.Replace("\r\n", "\n");
 
         // get the spawn position
         int separatorIndex = toProcess.IndexOf('\n');
         string[] respawnPositionCoord = toProcess.Substring(0, separatorIndex).Split();
-
-        // Format: Spawn Position: x y
-        // so use 2 and 3 for indices
-        respawnPosition = new Vector3(float.Parse(respawnPositionCoord[2]), float.Parse(respawnPositionCoord[3]), 0);
 
         // skip an empty line in between
         toProcess = toProcess.Substring(separatorIndex + 2);
@@ -49,8 +49,6 @@ public class LevelCreator : MonoBehaviour
 
         // get checkpoints coordinates from next line 
         int newline2 = toProcess.IndexOf('\n');
-        string[] checkpoints = toProcess.Substring("Checkpoints: ".Length,
-                                        newline2 - "Checkpoints: ".Length).Split(); // ignore the prefix "Checkpoints: "
 
         // get block data after skipping an empty line
         toProcess = toProcess.Substring(newline2 + 2);
@@ -80,24 +78,8 @@ public class LevelCreator : MonoBehaviour
         // finishline coordinates
         string[] finishLineCoord = toProcess.Substring("Finishline: ".Length).Split();
 
-        // create scene objects 
-        CreateSceneObjects();
-
         // create the blocks, checkpoints, and finishline in the level
-        MapManager.instance.CreateLevel(blockMap, killerBlockMap, checkpoints, finishLineCoord);
-    }
-
-    void CreateSceneObjects()
-    {
-        // instantiate the character at respawn position
-        GameObject curCharacter = Instantiate(character, respawnPosition, character.transform.rotation);
-
-        // create camera and set it to follow player
-        //CinemachineVirtualCamera curCamera = Instantiate(vCamera);
-        List<CinemachineVirtualCamera> vcamList = LevelManager.instance.vcamList;
-        for (int i = 0; i < vcamList.Count; i++) {
-            LevelManager.instance.vcamList[i].Follow = curCharacter.transform;
-        }
+        CreateLevel(blockMap);
     }
 
     int AssignBlocks(string data, int[,] map)
@@ -151,5 +133,28 @@ public class LevelCreator : MonoBehaviour
 
         // +1 so it syncs with indexing with "\n"
         return index + 1;
+    }
+
+    public void CreateLevel(int[,] normalBlockMap)
+    {
+        GameObject blocksParent = new("Block Parent");
+
+        // generate the normal blocks
+        for (int i = 0; i < normalBlockMap.GetLength(0); i++)
+        {
+            for (int j = 0; j < normalBlockMap.GetLength(1); j++)
+            {
+                if (normalBlockMap[i, j] == 1)
+                {
+                    Instantiate(block, GetWorldPosFromArrayIndices(i, j, normalBlockMap), Quaternion.identity, blocksParent.transform);
+                }
+            }
+        }
+    }
+
+    Vector3 GetWorldPosFromArrayIndices(int i, int j, int[,] map)
+    {
+        // transpose the map and reflect it across the middle line
+        return new Vector3(j, map.GetLength(0) - i - 1, 0);
     }
 }
