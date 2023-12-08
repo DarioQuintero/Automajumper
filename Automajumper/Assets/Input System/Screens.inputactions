@@ -52,6 +52,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Show Skip Instruction",
+                    "type": "Button",
+                    "id": "6ac3e4e4-8617-4aec-940e-b47b2203448d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -63,6 +72,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Skip Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab13f9e4-d4eb-45c2-81c1-791015898d35",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Skip Instruction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31d73f2e-6f6f-4cec-83a3-2ddfe9102787",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Show Skip Instruction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
