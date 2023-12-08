@@ -59,6 +59,9 @@ public class TitleScreenManager : MonoBehaviour
 
     public void OnGameStarted()
     {
+        if (started)
+            return;
+
         started = true;
         StartCoroutine(nameof(FadeOut));
     }
